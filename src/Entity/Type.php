@@ -20,7 +20,7 @@ class Type
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $desscription = null;
+    private ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
@@ -67,14 +67,14 @@ class Type
         return $this;
     }
 
-    public function getDesscription(): ?string
+    public function getDescription(): ?string
     {
-        return $this->desscription;
+        return $this->description;
     }
 
-    public function setDesscription(string $desscription): static
+    public function setDescription(string $description): static
     {
-        $this->desscription = $desscription;
+        $this->description = $description;
 
         return $this;
     }

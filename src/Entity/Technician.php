@@ -38,6 +38,11 @@ class Technician extends User
         $this->maintenances = new ArrayCollection();
     }
 
+    public function setPhoneNumber(?string $phoneNumber): static
+    {
+        $this->phoneNumber = $phoneNumber;
+    }
+
     public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
