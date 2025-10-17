@@ -3,19 +3,24 @@
 {% block title %}CarSeller{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto px-4 py-8">
-        <div class="flex items-center justify-around mb-4">
-            <article class="article flex flex-col">
-                <h1 class="card-title">Locations</h1>
-                <p class="card-text">Service de location de véhicules</p>
-                <a href="{{ path('app_vehicle_locations') }}" class="card-button">Voir les locations</a>
-            </article>
-
-            <article class="article flex flex-col">
-                <h1 class="card-title">Ventes</h1>
-                <p class="card-text">Service de vente de véhicules</p>
-                <a href="{{ path('app_home') }}" class="card-button">Voir les ventes</a>
-            </article>
+    <section class="card-list">
+        <div class="card">
+            <div class="card-icon-text-blue">
+                L
+            </div>
+            <h3 class="card-title">Locations</h3>
+            <p class="card-text">Service de location de véhicules</p>
+            <a href="{{ path('app_vehicle_locations') }}" class="card-button">Voir les locations</a>
         </div>
-    </div>
+
+        <div class="card">
+            <div class="card-icon-text-orange">
+                V
+            </div>
+
+            <h3 class="card-title">Ventes</h3>
+            <p class="card-text">Service de vente de véhicules</p>
+            <a href="{{ path('app_home') }}" class="card-button">Voir les ventes</a>
+        </div>
+    </section>
 {% endblock %}

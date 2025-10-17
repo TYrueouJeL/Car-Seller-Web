@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VehicleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VehicleRepository::class)]
@@ -46,11 +47,27 @@ class Vehicle
     #[ORM\OneToMany(targetEntity: UserVehicle::class, mappedBy: 'vehicle')]
     private Collection $userVehicles;
 
+    #[ORM\Column]
+    private ?int $year = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $registration = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $mileage = null;
+
+    /**
+     * @var Collection<int, VehicleFeature>
+     */
+    #[ORM\OneToMany(targetEntity: VehicleFeature::class, mappedBy: 'vehicle')]
+    private Collection $vehicleFeatures;
+
     public function __construct()
     {
         $this->rentableVehicles = new ArrayCollection();
         $this->salableVehicles = new ArrayCollection();
         $this->userVehicles = new ArrayCollection();
+        $this->vehicleFeatures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +183,72 @@ class Vehicle
             // set the owning side to null (unless already changed)
             if ($userVehicle->getVehicle() === $this) {
                 $userVehicle->setVehicle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): static
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getRegistration(): ?string
+    {
+        return $this->registration;
+    }
+
+    public function setRegistration(string $registration): static
+    {
+        $this->registration = $registration;
+
+        return $this;
+    }
+
+    public function getMileage(): ?string
+    {
+        return $this->mileage;
+    }
+
+    public function setMileage(string $mileage): static
+    {
+        $this->mileage = $mileage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VehicleFeature>
+     */
+    public function getVehicleFeatures(): Collection
+    {
+        return $this->vehicleFeatures;
+    }
+
+    public function addVehicleFeature(VehicleFeature $vehicleFeature): static
+    {
+        if (!$this->vehicleFeatures->contains($vehicleFeature)) {
+            $this->vehicleFeatures->add($vehicleFeature);
+            $vehicleFeature->setVehicle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleFeature(VehicleFeature $vehicleFeature): static
+    {
+        if ($this->vehicleFeatures->removeElement($vehicleFeature)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicleFeature->getVehicle() === $this) {
+                $vehicleFeature->setVehicle(null);
             }
         }
 

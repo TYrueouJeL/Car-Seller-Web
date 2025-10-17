@@ -7,8 +7,8 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use App\Entity\{
-    Customer,
+use App\Entity\{Customer,
+    Feature,
     Technician,
     Category,
     Type,
@@ -31,8 +31,8 @@ use App\Entity\{
     StockMovement,
     SupplyOrder,
     SupplyOrderLine,
-    TicketComment
-};
+    TicketComment,
+    VehicleFeature};
 
 class AppFixtures extends Fixture
 {
@@ -75,20 +75,45 @@ class AppFixtures extends Fixture
 
         // ==== CATEGORIES ====
         $categories = [];
-        for ($i = 0; $i < 10; $i++) {
+        $categoryNames = [
+            'Citadine',
+            'Berline',
+            'Break',
+            'SUV',
+            'Monospace',
+            'Coupé',
+            'Cabriolet',
+            'Utilitaire',
+            'Compacte',
+            'Hybride / Électrique'
+        ];
+        foreach ($categoryNames as $name) {
             $cat = new Category();
-            $cat->setName($faker->word());
+            $cat->setName($name);
             $manager->persist($cat);
             $categories[] = $cat;
         }
 
         // ==== TYPES ====
         $types = [];
-        for ($i = 0; $i < 5; $i++) {
+        $serviceTypes = [
+            ['name' => 'Révision complète', 'desc' => 'Contrôle général, vérification des fluides et réglages périodiques.', 'price' => 150],
+            ['name' => 'Vidange et filtres', 'desc' => 'Remplacement de l\'huile moteur et des filtres (huile/air/carburant).', 'price' => 80],
+            ['name' => 'Remplacement plaquettes de frein', 'desc' => 'Remplacement des plaquettes et contrôle des disques.', 'price' => 220],
+            ['name' => 'Diagnostic électronique', 'desc' => 'Scan électronique, lecture et suppression des codes défauts.', 'price' => 90],
+            ['name' => 'Courroie de distribution', 'desc' => 'Remplacement de la courroie et contrôles associés.', 'price' => 450],
+            ['name' => 'Pneumatiques et équilibrage', 'desc' => 'Remplacement des pneus, montage et équilibrage.', 'price' => 100],
+            ['name' => 'Remplacement batterie', 'desc' => 'Test et remplacement de la batterie du véhicule.', 'price' => 130],
+            ['name' => 'Remplacement amortisseurs', 'desc' => 'Remplacement des amortisseurs et géométrie si nécessaire.', 'price' => 320],
+            ['name' => 'Entretien climatisation', 'desc' => 'Rechargement gaz, contrôle des composants et désinfection.', 'price' => 140],
+            ['name' => 'Réparation échappement', 'desc' => 'Remplacement ou soudure des éléments du système d\'échappement.', 'price' => 200],
+        ];
+
+        foreach ($serviceTypes as $st) {
             $type = new Type();
-            $type->setName($faker->word());
-            $type->setDescription($faker->sentence());
-            $type->setPrice($faker->numberBetween(50, 500));
+            $type->setName($st['name']);
+            $type->setDescription($st['desc']);
+            $type->setPrice($st['price']);
             $manager->persist($type);
             $types[] = $type;
         }
@@ -114,40 +139,101 @@ class AppFixtures extends Fixture
 
         // ==== PIECES ====
         $pieces = [];
+        $partNames = [
+            "Filtre à huile", "Filtre à air", "Filtre à carburant", "Filtre d'habitacle",
+            "Bougie d'allumage", "Plaquettes de frein", "Disque de frein", "Étrier de frein",
+            "Amortisseur avant", "Amortisseur arrière", "Pneu 16\"", "Pneu 17\"", "Jante en alliage",
+            "Alternateur", "Démarreur", "Radiateur", "Pompe à eau", "Courroie de distribution",
+            "Courroie d'accessoire", "Pompe à carburant", "Injecteur", "Sonde lambda", "Catalyseur",
+            "Silencieux", "Turbo", "Embrayage", "Volant moteur", "Boîte de vitesses", "Cardan",
+            "Bras de suspension", "Rotule de direction", "Roulement de roue", "Support moteur",
+            "Capteur ABS", "Capteur de température", "Capteur de pression", "Pare-brise",
+            "Essuie-glace", "Phare avant", "Feu arrière", "Clignotant", "Pare-choc avant",
+            "Pare-choc arrière", "Kit distribution", "Pompe à huile", "Condenseur de clim",
+            "Compresseur de climatisation", "Boitier papillon", "Biellette de barre stabilisatrice",
+            "Tuyau de radiateur", "Réservoir carburant", "Cable d'embrayage"
+        ];
+
+        $cheapKeywords = ['filtre', 'bougie', 'ampoule', 'joint', 'fusible', 'essuie-glace', 'biellette'];
+        $midKeywords = ['plaquette', 'disque', 'pneu', 'amortisseur', 'radiateur', 'échappement', 'cardan', 'rotule'];
+        $highKeywords = ['alternateur', 'démarreur', 'turbo', 'embrayage', 'moteur', 'boîte', 'injecteur', 'compresseur'];
+
         for ($i = 0; $i < 50; $i++) {
+            $name = $faker->randomElement($partNames);
             $piece = new Piece();
-            $piece->setName($faker->word());
-            $piece->setPrice($faker->randomFloat(2, 10, 100));
+            $piece->setName($name);
+
+            // Déterminer une fourchette de prix réaliste selon le type de pièce
+            $min = 20;
+            $max = 200;
+            $lowerName = mb_strtolower($name, 'UTF-8');
+
+            foreach ($cheapKeywords as $kw) {
+                if (mb_strpos($lowerName, $kw) !== false) {
+                    $min = 5; $max = 80;
+                    break;
+                }
+            }
+            foreach ($midKeywords as $kw) {
+                if (mb_strpos($lowerName, $kw) !== false) {
+                    $min = 40; $max = 250;
+                    break;
+                }
+            }
+            foreach ($highKeywords as $kw) {
+                if (mb_strpos($lowerName, $kw) !== false) {
+                    $min = 200; $max = 2000;
+                    break;
+                }
+            }
+
+            $piece->setPrice($faker->randomFloat(2, $min, $max));
             $manager->persist($piece);
             $pieces[] = $piece;
         }
 
         // ==== MOVEMENT TYPE ====
         $movementTypes = [];
-        foreach (["Entrée", "Sortie", "Ajustement"] as $m) {
+        foreach (["Entrée", "Sortie", "Inventaire"] as $m) {
             $mv = new MovementType();
             $mv->setName($m);
             $manager->persist($mv);
             $movementTypes[] = $mv;
         }
 
-        // ==== BRAND ====
+        // ==== BRANDS & MODELS REALISTES ====
         $brands = [];
-        foreach (["Peugeot", "Renault", "Tesla", "BMW", "Toyota"] as $b) {
+        $models = [];
+
+        $brandModels = [
+            "Peugeot" => ["208", "308", "2008", "3008", "5008"],
+            "Renault" => ["Clio", "Megane", "Captur", "Kadjar", "Talisman"],
+            "Tesla"   => ["Model S", "Model 3", "Model X", "Model Y"],
+            "BMW"     => ["Serie 1", "Serie 3", "Serie 5", "X1", "X5"],
+            "Toyota"  => ["Yaris", "Corolla", "C-HR", "RAV4", "Prius"]
+        ];
+
+        foreach ($brandModels as $brandName => $modelNames) {
             $brand = new Brand();
-            $brand->setName($b);
+            $brand->setName($brandName);
             $manager->persist($brand);
             $brands[] = $brand;
+
+            foreach ($modelNames as $mName) {
+                $model = new Model();
+                $model->setName($mName);
+                $model->setBrand($brand);
+                $manager->persist($model);
+                $models[] = $model;
+            }
         }
 
-        // ==== MODELS ====
-        $models = [];
-        for ($i = 0; $i < 20; $i++) {
-            $model = new Model();
-            $model->setName($faker->word());
-            $model->setBrand($faker->randomElement($brands));
-            $manager->persist($model);
-            $models[] = $model;
+        $features = [];
+        foreach (["Airbag", "Fermeture centralisée", "ABS", "ESP", "Climatisation", "Radar de recul", "Caméra de recul", "Régulateur de vitesse", "Sièges chauffant"] as $f) {
+            $feature = new Feature();
+            $feature->setName($f);
+            $manager->persist($feature);
+            $features[] = $feature;
         }
 
         // Flush all basic entities first before creating relationships
@@ -160,6 +246,9 @@ class AppFixtures extends Fixture
             $uv->setModel($faker->randomElement($models));
             $uv->setCategory($faker->randomElement($categories));
             $uv->setCustomer($faker->randomElement($customers));
+            $uv->setYear($faker->year());
+            $uv->setMileage($faker->randomFloat(2, 0, 100000));
+            $uv->setRegistration(strtoupper($faker->bothify('??-###-??')));
             $manager->persist($uv);
             $userVehicles[] = $uv;
         }
@@ -170,6 +259,9 @@ class AppFixtures extends Fixture
             $rv->setModel($faker->randomElement($models));
             $rv->setCategory($faker->randomElement($categories));
             $rv->setDailyPrice($faker->randomFloat(2, 20, 200));
+            $rv->setYear($faker->year());
+            $rv->setMileage($faker->randomFloat(2, 0, 100000));
+            $rv->setRegistration(strtoupper($faker->bothify('??-###-??')));
             $manager->persist($rv);
             $rentableVehicles[] = $rv;
         }
@@ -180,6 +272,9 @@ class AppFixtures extends Fixture
             $sv->setModel($faker->randomElement($models));
             $sv->setCategory($faker->randomElement($categories));
             $sv->setPrice($faker->randomFloat(2, 5000, 50000));
+            $sv->setYear($faker->year());
+            $sv->setMileage($faker->randomFloat(2, 0, 100000));
+            $sv->setRegistration(strtoupper($faker->bothify('??-###-??')));
             $manager->persist($sv);
             $salableVehicles[] = $sv;
         }
@@ -189,6 +284,23 @@ class AppFixtures extends Fixture
 
         // regrouper tous les véhicules pour usages génériques
         $allVehicles = array_merge($userVehicles, $rentableVehicles, $salableVehicles);
+
+        // Assigner des features aléatoires (1..5) à chaque véhicule sans doublons
+        foreach ($allVehicles as $veh) {
+            $assigned = [];
+            $nb = $faker->numberBetween(1, count($features));
+            while (count($assigned) < $nb) {
+                $feat = $faker->randomElement($features);
+                if (in_array($feat, $assigned, true)) {
+                    continue;
+                }
+                $assigned[] = $feat;
+                $vf = new VehicleFeature();
+                $vf->setVehicle($veh);
+                $vf->setFeature($feat);
+                $manager->persist($vf);
+            }
+        }
 
         // ==== MAINTENANCE REQUESTS (utiliser UserVehicle) ====
         $requests = [];

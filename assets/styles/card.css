@@ -1,0 +1,27 @@
+.card-list {
+    @apply max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-6 pb-20;
+}
+
+.card {
+    @apply bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition;
+}
+
+.card-icon-text-blue {
+    @apply w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4 text-xl font-bold;
+}
+
+.card-icon-text-orange {
+    @apply w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-4 text-xl font-bold;
+}
+
+.card-title {
+    @apply text-lg font-semibold mb-2;
+}
+
+.card-text {
+    @apply text-gray-600 text-sm mb-4;
+}
+
+.card-button {
+    @apply px-4 py-2 rounded-md hover:bg-blue-100 transition border border-blue-500 text-blue-600 font-medium text-sm hover:shadow-md;
+}
