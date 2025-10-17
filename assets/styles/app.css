@@ -1,2 +1,38 @@
 @import "tailwindcss";
+@import './Card.css';
+@import './Details.css';
+@import './List.css';
 @source not "../../public";
+
+/* Bouton navigation */
+.navigation-button {
+    @apply flex items-center gap-4 p-2 border rounded-lg;
+}
+
+.navigation-button:hover {
+    @apply bg-gray-200;
+}
+
+/* Bouton suppression */
+.delete-button {
+    @apply bg-red-500 text-white px-4 py-2 rounded-lg;
+}
+
+.delete-button:hover {
+    @apply bg-red-600;
+}
+
+/* Bouton édition */
+.edit-button {
+    @apply bg-blue-500 text-white px-4 py-2 rounded-lg;
+}
+
+.edit-button:hover {
+    @apply bg-blue-600;
+}
+
+/* Titre */
+.title {
+    @apply text-2xl font-bold text-gray-800 mb-4;
+}
+

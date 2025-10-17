@@ -159,11 +159,7 @@ class AppFixtures extends Fixture
             $uv = new UserVehicle();
             $uv->setModel($faker->randomElement($models));
             $uv->setCategory($faker->randomElement($categories));
-            if (method_exists($uv, 'setOwner')) {
-                $uv->setOwner($faker->randomElement($customers));
-            } elseif (method_exists($uv, 'setCustomer')) {
-                $uv->setCustomer($faker->randomElement($customers));
-            }
+            $uv->setCustomer($faker->randomElement($customers));
             $manager->persist($uv);
             $userVehicles[] = $uv;
         }
@@ -173,11 +169,7 @@ class AppFixtures extends Fixture
             $rv = new RentableVehicle();
             $rv->setModel($faker->randomElement($models));
             $rv->setCategory($faker->randomElement($categories));
-            if (method_exists($rv, 'setDailyRate')) {
-                $rv->setDailyRate($faker->randomFloat(2, 20, 200));
-            } elseif (method_exists($rv, 'setRentPrice')) {
-                $rv->setRentPrice($faker->randomFloat(2, 20, 200));
-            }
+            $rv->setDailyPrice($faker->randomFloat(2, 20, 200));
             $manager->persist($rv);
             $rentableVehicles[] = $rv;
         }
@@ -187,9 +179,7 @@ class AppFixtures extends Fixture
             $sv = new SalableVehicle();
             $sv->setModel($faker->randomElement($models));
             $sv->setCategory($faker->randomElement($categories));
-            if (method_exists($sv, 'setPrice')) {
-                $sv->setPrice($faker->randomFloat(2, 5000, 50000));
-            }
+            $sv->setPrice($faker->randomFloat(2, 5000, 50000));
             $manager->persist($sv);
             $salableVehicles[] = $sv;
         }

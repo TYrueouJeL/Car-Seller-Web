@@ -22,16 +22,16 @@ class MaintenanceRequest
     private ?\DateTimeImmutable $approvedDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenanceRequests')]
-    private ?customer $customer = null;
+    private ?Customer $customer = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenanceRequests')]
-    private ?type $type = null;
+    private ?Type $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenanceRequests')]
-    private ?uservehicle $vehicle = null;
+    private ?UserVehicle $vehicle = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenanceRequests')]
-    private ?technician $technician = null;
+    private ?Technician $technician = null;
 
     /**
      * @var Collection<int, Maintenance>

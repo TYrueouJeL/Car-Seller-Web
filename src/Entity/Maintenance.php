@@ -20,22 +20,22 @@ class Maintenance
     private ?bool $isDone = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenances')]
-    private ?customer $customer = null;
+    private ?Customer $customer = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenances')]
-    private ?technician $technician = null;
+    private ?Technician $technician = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenances')]
-    private ?maintenancestatus $maintenanceStatus = null;
+    private ?MaintenanceStatus $maintenanceStatus = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenances')]
-    private ?maintenanceRequest $maintenanceRequest = null;
+    private ?MaintenanceRequest $maintenanceRequest = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenances')]
-    private ?type $type = null;
+    private ?Type $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenances')]
-    private ?uservehicle $vehicle = null;
+    private ?UserVehicle $vehicle = null;
 
     public function getId(): ?int
     {

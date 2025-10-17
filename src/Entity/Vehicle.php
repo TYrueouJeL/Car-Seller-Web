@@ -23,10 +23,10 @@ class Vehicle
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'vehicles')]
-    private ?model $model = null;
+    private ?Model $model = null;
 
     #[ORM\ManyToOne(inversedBy: 'vehicles')]
-    private ?category $category = null;
+    private ?Category $category = null;
 
     /**
      * @var Collection<int, RentableVehicle>

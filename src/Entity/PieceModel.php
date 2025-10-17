@@ -10,11 +10,11 @@ class PieceModel
 {
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'pieceModels')]
-    private ?model $model = null;
+    private ?Model $model = null;
 
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'pieceModels')]
-    private ?piece $piece = null;
+    private ?Piece $piece = null;
 
     public function getModel(): ?model
     {

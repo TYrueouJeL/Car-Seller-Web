@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locations{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="title">Locations</h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for vehicle in vehicles %}
+                <article class="article flex flex-col">
+                    <img src="https://picsum.photos/400/200?random={{ vehicle.model.id }}" alt="{{ vehicle.model.name }}" class="card-image">
+
+                    <h2 class="card-title">{{ vehicle.model.name }}</h2>
+
+                    <div class="flex items-center gap-4">
+                        <p class="card-text">Categorie : {{ vehicle.category.name }}</p>
+                        <p class="card-text">Prix : {{ vehicle.dailyPrice }}€/jour</p>
+                    </div>
+
+                    <a href="{{ path('app_vehicle_locations', {'id': vehicle.id}) }}" class="card-button">Voir les détails</a>
+                </article>
+            {% else %}
+                <p>Aucun véhicule disponible pour la location.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

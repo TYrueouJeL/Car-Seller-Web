@@ -1,8 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}CarSeller{% endblock %}
 
 {% block body %}
-    <h1 class="text-3xl font-bold underline">      Hello world!    </h1>
-    <p>Welcome to your new controller!</p>
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex items-center justify-around mb-4">
+            <article class="article flex flex-col">
+                <h1 class="card-title">Locations</h1>
+                <p class="card-text">Service de location de véhicules</p>
+                <a href="{{ path('app_vehicle_locations') }}" class="card-button">Voir les locations</a>
+            </article>
+
+            <article class="article flex flex-col">
+                <h1 class="card-title">Ventes</h1>
+                <p class="card-text">Service de vente de véhicules</p>
+                <a href="{{ path('app_home') }}" class="card-button">Voir les ventes</a>
+            </article>
+        </div>
+    </div>
 {% endblock %}

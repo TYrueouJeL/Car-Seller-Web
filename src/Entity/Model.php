@@ -19,7 +19,7 @@ class Model
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'models')]
-    private ?brand $brand = null;
+    private ?Brand $brand = null;
 
     /**
      * @var Collection<int, PieceModel>

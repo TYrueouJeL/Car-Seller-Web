@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class UserVehicle extends Vehicle
 {
     #[ORM\ManyToOne(inversedBy: 'userVehicles')]
-    private ?customer $customer = null;
+    private ?Customer $customer = null;
 
     /**
      * @var Collection<int, MaintenanceRequest>
@@ -31,12 +31,12 @@ class UserVehicle extends Vehicle
         $this->maintenances = new ArrayCollection();
     }
 
-    public function getCustomer(): ?customer
+    public function getCustomer(): ?Customer
     {
         return $this->customer;
     }
 
-    public function setCustomer(?customer $customer): static
+    public function setCustomer(?Customer $customer): static
     {
         $this->customer = $customer;
 
