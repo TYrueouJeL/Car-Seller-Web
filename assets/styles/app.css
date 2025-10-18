@@ -1,4 +1,5 @@
 @import "tailwindcss";
 @import './card.css';
 @import './globals.css';
+@import './form.css';
 @source not "../../public";

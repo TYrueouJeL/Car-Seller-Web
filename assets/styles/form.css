@@ -1,0 +1,68 @@
+/* form container */
+.form {
+    @apply w-full max-w-xl mx-auto bg-white rounded-lg shadow-sm p-6 space-y-4 text-gray-800;
+}
+
+/* ligne de formulaire (label + input) */
+.form-row {
+    @apply flex flex-col md:flex-row md:items-center md:space-x-4 gap-2;
+}
+
+/* label */
+.form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+}
+
+/* input text, number, email, password */
+.form-input {
+    @apply block w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm text-gray-800 placeholder-gray-400
+    focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors;
+}
+
+/* textarea */
+.form-textarea {
+    @apply block w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm text-gray-800 placeholder-gray-400
+    focus:outline-none focus:ring-2 focus:ring-indigo-500 h-32 ;
+}
+
+/* select */
+.form-select {
+    @apply block w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm text-gray-800
+    focus:outline-none focus:ring-2 focus:ring-indigo-500;
+}
+
+/* aide / description sous un champ */
+.form-help {
+    @apply text-xs text-gray-500 mt-1;
+}
+
+/* message d'erreur */
+.form-error {
+    @apply text-xs text-red-600 mt-1;
+}
+
+/* message de notification */
+.form-notification {
+    @apply text-xs text-green-600 mt-1;
+}
+
+/* bouton submit / primaire */
+.form-submit {
+    @apply inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md
+    hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition;
+}
+
+/* petite zone pour actions inline (ex: reset, lien) */
+.form-inline-actions {
+    @apply flex items-center space-x-2;
+}
+
+/* checkbox / radio customisé */
+.form-checkbox {
+    @apply h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500;
+}
+
+/* état invalide sur champ */
+.form-invalid {
+    @apply border-red-500 focus:border-red-500 focus:ring-red-300;
+}
