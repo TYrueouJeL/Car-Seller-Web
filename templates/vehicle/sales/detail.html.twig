@@ -1,43 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Locations{% endblock %}
+{% block title %}Vente{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto px-8 py-8">
-        <h1 class="title text-center">{{ vehicle.model.name }}</h1>
-
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-1">
-                <img src="https://picsum.photos/400/200?random={{ vehicle.model.id }}" alt="{{ vehicle.model.name }}" class="rounded shadow w-full h-64 object-cover">
-            </div>
-
-            <div class="md:col-span-1">
-                <h2 class="subtitle mb-2">{{ vehicle.model.brand.name }} - {{ vehicle.model.name }}</h2>
-                <ul class="text-sm text-gray-700 space-y-1 mb-4">
-                    {% if vehicle.year %}<li><strong>Année:</strong> {{ vehicle.year }}</li>{% endif %}
-                    {% if vehicle.registration %}<li><strong>Immatriculation:</strong> {{ vehicle.registration }}</li>{% endif %}
-                    {% if vehicle.mileage %}<li><strong>Kilométrage:</strong> {{ vehicle.mileage }} km</li>{% endif %}
-                </ul>
-
-                <div class="mt-4">
-                    <h3 class="font-semibold text-sm mb-2">Options :</h3>
-                    <div class="flex flex-wrap gap-2">
-                        {% for feature in features %}
-                            <span class="text-xs bg px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 cursor-default">{{ feature.name }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <aside class="md:col-span-1 bg-white border rounded p-4 shadow-sm">
-                <div class="text-center mb-3">
-                    <div class="text-2xl font-bold">{{ vehicle.price ~ ' €' }}</div>
-                </div>
-
-                <div class="flex gap-2">
-                    <a href="#" class="flex-1 bg-blue-600 text-white text-center py-2 rounded">Réserver</a>
-                </div>
-            </aside>
-        </div>
-    </div>
+    {{ component('detail', {
+        'vehicle': vehicle,
+        'type': 'sale',
+        'features': features,
+    }) }}
 {% endblock %}
