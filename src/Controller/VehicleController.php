@@ -6,6 +6,7 @@ use App\Entity\VehicleFeature;
 use App\Repository\FeatureRepository;
 use App\Repository\RentableVehicleRepository;
 use App\Repository\SalableVehicleRepository;
+use App\Repository\UserVehicleRepository;
 use App\Repository\VehicleFeatureRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,6 +67,25 @@ final class VehicleController extends AbstractController
         $features = array_map(fn(VehicleFeature $vf) => $vf->getFeature(), $vehicleFeatures);
 
         return $this->render('vehicle/sales/detail.html.twig', [
+            'vehicle' => $vehicle,
+            'features' => $features,
+        ]);
+    }
+
+    #[Route('/vehicle/userVehicle/{id}', name: 'app_vehicle_userVehicle')]
+    public function maintenance($id, UserVehicleRepository $userVehicleRepository, VehicleFeatureRepository $vehicleFeatureRepository): Response
+    {
+        $vehicle = $userVehicleRepository->find($id);
+
+        if (!$vehicle) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        $vehicleFeatures = $vehicleFeatureRepository->findBy(['vehicle' => $vehicle->getId()]);
+
+        $features = array_map(fn(VehicleFeature $vf) => $vf->getFeature(), $vehicleFeatures);
+
+        return $this->render('vehicle/userVehicle/detail.html.twig', [
             'vehicle' => $vehicle,
             'features' => $features,
         ]);

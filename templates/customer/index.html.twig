@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-8 py-8">
+        <h1 class="title text-center">Mon compte</h1>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="md:col-span-2 md:col-start-2 card">
+                <h2 class="card-title">Informations personnelles</h2>
+                <ul class="card-text space-y-2">
+                    <li><strong>Nom :</strong> {{ app.user.lastName }}</li>
+                    <li><strong>Prénom :</strong> {{ app.user.firstName }}</li>
+                    <li><strong>Email :</strong> {{ app.user.email }}</li>
+                </ul>
+            </div>
+
+            <div class="md:col-span-2 card">
+                <h2 class="card-title">Mes véhicules</h2>
+                {% if userVehicles is not empty %}
+                    {{ component('card_list', {
+                        'items': userVehicles,
+                        'type': 'userVehicle',
+                        'detail_path': 'vehicle/',
+                    }) }}
+                {% else %}
+                    <p class="text-gray-600">Vous n'avez pas encore ajouté de véhicules.</p>
+                {% endif %}
+            </div>
+
+            <div class="md:col-span-2 card">
+                <h2 class="card-title">Mes locations en cours</h2>
+                {% if rentalVehicles is not empty %}
+                    {{ component('card_list', {
+                        'items': rentalVehicles,
+                        'type': 'rental',
+                        'detail_path': 'vehicle/',
+                    }) }}
+                {% else %}
+                    <p class="text-gray-600">Vous n'avez pas de locations en cours.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

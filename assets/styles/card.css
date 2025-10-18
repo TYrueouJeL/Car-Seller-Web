@@ -3,7 +3,7 @@
 }
 
 .card {
-    @apply bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition;
+    @apply bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition border border-gray-300;
 }
 
 .card-icon-text-blue {

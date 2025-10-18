@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ vehicle.model.brand.name }} - {{ vehicle.model.name }}{% endblock %}
+
+{% block body %}
+    {{ component('detail', {
+        'vehicle': vehicle,
+        'type': 'userVehicle',
+        'features': features,
+    }) }}
+{% endblock %}

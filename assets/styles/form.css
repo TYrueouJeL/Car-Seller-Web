@@ -1,6 +1,6 @@
 /* form container */
 .form {
-    @apply w-full max-w-xl mx-auto bg-white rounded-lg shadow-sm p-6 space-y-4 text-gray-800;
+    @apply w-full max-w-xl mx-auto bg-white rounded-lg shadow-sm p-6 space-y-4 text-gray-800 border border-gray-300;
 }
 
 /* ligne de formulaire (label + input) */
