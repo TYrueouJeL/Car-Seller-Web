@@ -19,17 +19,6 @@
                     {% if vehicle.mileage %}<li><strong>Kilométrage:</strong> {{ vehicle.mileage }} km</li>{% endif %}
                 </ul>
 
-{#                {% if vehicle.features is iterable and vehicle.features|length > 0 %}#}
-{#                    <div class="mt-4">#}
-{#                        <h3 class="font-semibold text-sm mb-2">Équipements</h3>#}
-{#                        <div class="flex flex-wrap gap-2">#}
-{#                            {% for feature in vehicle.features %}#}
-{#                                <span class="text-xs bg-gray-100 px-2 py-1 rounded">{{ feature }}</span>#}
-{#                            {% endfor %}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                {% endif %}#}
-
                 <div class="mt-4">
                     <h3 class="font-semibold text-sm mb-2">Options :</h3>
                     <div class="flex flex-wrap gap-2">
@@ -42,7 +31,7 @@
 
             <aside class="md:col-span-1 bg-white border rounded p-4 shadow-sm">
                 <div class="text-center mb-3">
-                    <div class="text-2xl font-bold">{{ vehicle.dailyPrice ~ ' €/jour' }}</div>
+                    <div class="text-2xl font-bold">{{ vehicle.price ~ ' €' }}</div>
                 </div>
 
                 <div class="flex gap-2">

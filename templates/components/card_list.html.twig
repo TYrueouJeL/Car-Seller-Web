@@ -1,0 +1,11 @@
+<div class="card-list grid grid-cols-1 md:grid-cols-3 gap-4">
+    {% for item in items %}
+        {{ component('card', {
+            'vehicle': item,
+            'detail_path': detail_path is defined ? detail_path ~ type ~ '/' ~ item.id : null,
+            'type': type,
+        }) }}
+    {% else %}
+        <p class="text-gray-500 italic">Aucun élément à afficher.</p>
+    {% endfor %}
+</div>

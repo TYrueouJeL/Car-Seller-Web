@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locations{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-8 py-8">
+        <h1 class="title text-center">Locations</h1>
+
+        {{ component('card_list', {
+            'items': vehicles,
+            'type': 'rental',
+        }) }}
+    </div>
+{% endblock %}
