@@ -243,6 +243,17 @@ class Vehicle
         return $this;
     }
 
+    public function getFeatures(): Collection
+    {
+        $features = new ArrayCollection();
+        foreach ($this->vehicleFeatures as $vf) {
+            if (method_exists($vf, 'getFeature') && $vf->getFeature() !== null) {
+                $features->add($vf->getFeature());
+            }
+        }
+        return $features;
+    }
+
     public function removeVehicleFeature(VehicleFeature $vehicleFeature): static
     {
         if ($this->vehicleFeatures->removeElement($vehicleFeature)) {

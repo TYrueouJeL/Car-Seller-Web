@@ -1,0 +1,24 @@
+<div class="card">
+    <h2 class="card-title">{{ maintenanceRequest.type.name }}</h2>
+
+    <div class="flex items-center gap-4">
+        <div class="grid grid-cols-2 gap-4">
+            <p class="card-text"><strong>Client :</strong> {{ maintenanceRequest.customer.lastname }} {{ maintenanceRequest.customer.firstname }}</p>
+            <p class="card-text"><strong>Type :</strong> {{ maintenanceRequest.type.name }}</p>
+            <p class="card-text"><strong>Date demandée :</strong> {{ maintenanceRequest.requestDate|date("d/m/Y H:i") }}</p>
+            <p class="card-text"><strong>Durée :</strong> {{ maintenanceRequest.type.duration }}min</p>
+        </div>
+
+        <div class="ml-auto w-1/3">
+            {{ component('vehicle_card', {
+                'vehicle': maintenanceRequest.vehicle,
+                'detail_path': 'vehicle/userVehicle/' ~ maintenanceRequest.vehicle.id,
+                'type': 'userVehicle',
+            }) }}
+        </div>
+    </div>
+
+    {% if detail_path != null %}
+        <a href="{{ detail_path }}" class="card-button">Voir plus</a>
+    {% endif %}
+</div>

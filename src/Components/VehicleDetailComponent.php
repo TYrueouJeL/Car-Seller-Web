@@ -5,8 +5,8 @@ namespace App\Components;
 use App\Entity\Vehicle;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('detail')]
-class DetailComponent
+#[AsTwigComponent('vehicle_detail')]
+class VehicleDetailComponent
 {
     public Vehicle $vehicle;
     public array $features;

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rendez-vous{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-8 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-6">
+            <div>
+                <h3 class="title">Rendez-vous</h3>
+
+                {{ component('card_list', {
+                    'items': maintenances,
+                    'type': 'maintenance',
+                    'column_count': 1,
+                }) }}
+            </div>
+
+            <div>
+                <h3 class="title mt-12 md:mt-0">Demandes de rendez-vous</h3>
+
+                {{ component('card_list', {
+                    'items': maintenanceRequests,
+                    'type': 'maintenanceRequest',
+                    'column_count': 1,
+                }) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

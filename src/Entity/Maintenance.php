@@ -16,9 +16,6 @@ class Maintenance
     #[ORM\Column]
     private ?\DateTime $date = null;
 
-    #[ORM\Column]
-    private ?bool $isDone = null;
-
     #[ORM\ManyToOne(inversedBy: 'maintenances')]
     private ?Customer $customer = null;
 
@@ -50,18 +47,6 @@ class Maintenance
     public function setDate(\DateTime $date): static
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function isDone(): ?bool
-    {
-        return $this->isDone;
-    }
-
-    public function setIsDone(bool $isDone): static
-    {
-        $this->isDone = $isDone;
 
         return $this;
     }

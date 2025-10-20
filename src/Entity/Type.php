@@ -25,6 +25,9 @@ class Type
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
 
+    #[ORM\Column]
+    private int $duration;
+
     /**
      * @var Collection<int, TypePiece>
      */
@@ -87,6 +90,18 @@ class Type
     public function setPrice(string $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): static
+    {
+        $this->duration = $duration;
 
         return $this;
     }

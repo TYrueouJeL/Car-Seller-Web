@@ -10,11 +10,11 @@ class TypePiece
 {
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'typePieces')]
-    private ?piece $piece = null;
+    private ?Piece $piece = null;
 
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'typePieces')]
-    private ?type $type = null;
+    private ?Type $type = null;
 
     #[ORM\Column]
     private ?int $quantity = null;

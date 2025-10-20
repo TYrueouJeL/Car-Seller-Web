@@ -3,7 +3,7 @@
 {% block title %}CarSeller{% endblock %}
 
 {% block body %}
-    <section class="card-list-3">
+    <section class="card-list-2">
         <div class="card">
             <div class="card-icon-text-blue">
                 L
@@ -22,5 +22,17 @@
             <p class="card-text">Service de vente de véhicules</p>
             <a href="{{ path('app_vehicle_sale') }}" class="card-button">Voir les ventes</a>
         </div>
+
+        {% if app.user %}
+            <div class="card">
+                <div class="card-icon-text-green">
+                    R
+                </div>
+
+                <h3 class="card-title">Rendez-vous</h3>
+                <p class="card-text">Service de rendez-vous</p>
+                <a href="{{ path('app_maintenance') }}" class="card-button">Voir les rendez-vous</a>
+            </div>
+        {% endif %}
     </section>
 {% endblock %}

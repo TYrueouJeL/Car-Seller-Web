@@ -134,8 +134,12 @@ final class VehicleController extends AbstractController
     public function userVehicleDetail($id, UserVehicleRepository $userVehicleRepository, VehicleFeatureRepository $vehicleFeatureRepository): Response
     {
         $vehicle = $userVehicleRepository->find($id);
+        $user = $this->getUser();
 
         if (!$vehicle) {
+            return $this->redirectToRoute('app_home');
+        }
+        if ($vehicle->getCustomer() !== $user) {
             return $this->redirectToRoute('app_home');
         }
 

@@ -99,16 +99,16 @@ class AppFixtures extends Fixture
         // ==== TYPES ====
         $types = [];
         $serviceTypes = [
-            ['name' => 'Révision complète', 'desc' => 'Contrôle général, vérification des fluides et réglages périodiques.', 'price' => 150],
-            ['name' => 'Vidange et filtres', 'desc' => 'Remplacement de l\'huile moteur et des filtres (huile/air/carburant).', 'price' => 80],
-            ['name' => 'Remplacement plaquettes de frein', 'desc' => 'Remplacement des plaquettes et contrôle des disques.', 'price' => 220],
-            ['name' => 'Diagnostic électronique', 'desc' => 'Scan électronique, lecture et suppression des codes défauts.', 'price' => 90],
-            ['name' => 'Courroie de distribution', 'desc' => 'Remplacement de la courroie et contrôles associés.', 'price' => 450],
-            ['name' => 'Pneumatiques et équilibrage', 'desc' => 'Remplacement des pneus, montage et équilibrage.', 'price' => 100],
-            ['name' => 'Remplacement batterie', 'desc' => 'Test et remplacement de la batterie du véhicule.', 'price' => 130],
-            ['name' => 'Remplacement amortisseurs', 'desc' => 'Remplacement des amortisseurs et géométrie si nécessaire.', 'price' => 320],
-            ['name' => 'Entretien climatisation', 'desc' => 'Rechargement gaz, contrôle des composants et désinfection.', 'price' => 140],
-            ['name' => 'Réparation échappement', 'desc' => 'Remplacement ou soudure des éléments du système d\'échappement.', 'price' => 200],
+            ['name' => 'Révision complète', 'desc' => 'Contrôle général, vérification des fluides et réglages périodiques.', 'price' => 150, 'duration' => 30],
+            ['name' => 'Vidange et filtres', 'desc' => 'Remplacement de l\'huile moteur et des filtres (huile/air/carburant).', 'price' => 80, 'duration' => 15],
+            ['name' => 'Remplacement plaquettes de frein', 'desc' => 'Remplacement des plaquettes et contrôle des disques.', 'price' => 220, 'duration' => 20],
+            ['name' => 'Diagnostic électronique', 'desc' => 'Scan électronique, lecture et suppression des codes défauts.', 'price' => 90, 'duration' => 10],
+            ['name' => 'Courroie de distribution', 'desc' => 'Remplacement de la courroie et contrôles associés.', 'price' => 450, 'duration' => 20],
+            ['name' => 'Pneumatiques et équilibrage', 'desc' => 'Remplacement des pneus, montage et équilibrage.', 'price' => 100, 'duration' => 15],
+            ['name' => 'Remplacement batterie', 'desc' => 'Test et remplacement de la batterie du véhicule.', 'price' => 130, 'duration' => 10],
+            ['name' => 'Remplacement amortisseurs', 'desc' => 'Remplacement des amortisseurs et géométrie si nécessaire.', 'price' => 320, 'duration' => 20],
+            ['name' => 'Entretien climatisation', 'desc' => 'Rechargement gaz, contrôle des composants et désinfection.', 'price' => 140, 'duration' => 15],
+            ['name' => 'Réparation échappement', 'desc' => 'Remplacement ou soudure des éléments du système d\'échappement.', 'price' => 200, 'duration' => 20],
         ];
 
         foreach ($serviceTypes as $st) {
@@ -116,6 +116,7 @@ class AppFixtures extends Fixture
             $type->setName($st['name']);
             $type->setDescription($st['desc']);
             $type->setPrice($st['price']);
+            $type->setDuration($st['duration']);
             $manager->persist($type);
             $types[] = $type;
         }
@@ -325,7 +326,6 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $mnt = new Maintenance();
             $mnt->setDate($faker->dateTimeBetween('-1 month'));
-            $mnt->setIsDone($faker->boolean());
             $mnt->setCustomer($faker->randomElement($customers));
             $mnt->setTechnician($faker->randomElement($technicians));
             $mnt->setMaintenanceStatus($faker->randomElement($statuses));
