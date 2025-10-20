@@ -3,9 +3,15 @@
 {% block title %}Vente{% endblock %}
 
 {% block body %}
-    {{ component('detail', {
-        'vehicle': vehicle,
-        'type': 'sale',
-        'features': features,
-    }) }}
+    <div class="container mx-auto px-8 py-8">
+        <h1 class="title text-center">{{ vehicle.model.name }}</h1>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {{ component('detail', {
+                'vehicle': vehicle,
+                'type': 'sale',
+                'features': features,
+            }) }}
+        </div>
+    </div>
 {% endblock %}

@@ -56,6 +56,7 @@ class AppFixtures extends Fixture
             $c->setLastname($faker->lastName());
             $hashed = $this->hasher->hashPassword($c, 'password123');
             $c->setPassword($hashed);
+            $c->setRoles(['ROLE_CUSTOMER']);
             $manager->persist($c);
             $customers[] = $c;
         }
@@ -69,6 +70,7 @@ class AppFixtures extends Fixture
             $t->setLastname($faker->lastName());
             $hashed = $this->hasher->hashPassword($t, 'password123');
             $t->setPassword($hashed);
+            $t->setRoles(['ROLE_TECHNICIAN']);
             $manager->persist($t);
             $technicians[] = $t;
         }
@@ -375,6 +377,10 @@ class AppFixtures extends Fixture
             $ro->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-2 months')));
             $ro->setCustomer($faker->randomElement($customers));
             $ro->setVehicle($faker->randomElement($rentableVehicles));
+            $startDate = $faker->dateTimeBetween('-1 month', '+1 month');
+            $endDate = (clone $startDate)->modify('+'.$faker->numberBetween(1, 14).' days');
+            $ro->setStartDate($startDate);
+            $ro->setEndDate($endDate);
             $manager->persist($ro);
             $rentalOrders[] = $ro;
         }

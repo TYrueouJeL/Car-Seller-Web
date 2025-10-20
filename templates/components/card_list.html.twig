@@ -1,4 +1,4 @@
-<div class="card-list grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="{{ column_count == 2 ? 'card-list-2' : 'card-list-3' }}">
     {% for item in items %}
         {{ component('card', {
             'vehicle': item,

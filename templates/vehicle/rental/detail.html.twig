@@ -3,9 +3,50 @@
 {% block title %}Location{% endblock %}
 
 {% block body %}
-    {{ component('detail', {
-        'vehicle': vehicle,
-        'type': 'rental',
-        'features': features,
-    }) }}
+    <div class="container mx-auto px-8 py-8">
+        <h1 class="title text-center">{{ vehicle.model.name }}</h1>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {{ component('detail', {
+                'vehicle': vehicle,
+                'type': 'rental',
+                'features': features,
+                'customer': app.user,
+            }) }}
+
+            <aside class="md:col-span-1 card">
+                <div class="text-center mb-3">
+                    <div class="text-2xl font-bold">{{ vehicle.dailyPrice ~ ' €/jour' }}</div>
+                </div>
+
+                {% for message in app.flashes('success') %}
+                    <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% for message in app.flashes('error') %}
+                    <div class="mb-4 p-3 bg-red-100 text-red-800 rounded">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <div class="flex gap-2">
+                    {% if app.user %}
+
+                        {{ form_start(rentalOrderForm) }}
+                            <div class="mb-4 text-red-600">
+                                {{ form_errors(rentalOrderForm) }}
+                            </div>
+                            {{ form_row(rentalOrderForm.startDate) }}
+                            {{ form_row(rentalOrderForm.endDate) }}
+                            <button type="submit" class="form-submit">Louer</button>
+                        {{ form_end(rentalOrderForm) }}
+                    {% else %}
+                        <a href="{{ path('app_login') }}" class="flex-1 bg-gray-600 text-white text-center py-2 rounded">Connectez-vous pour continuer</a>
+                    {% endif %}
+                </div>
+            </aside>
+        </div>
+    </div>
 {% endblock %}

@@ -9,11 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: RentalOrderRepository::class)]
 class RentalOrder extends Order
 {
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $startDate = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: false)]
+    private \DateTime $startDate;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $endDate = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: false)]
+    private \DateTime $endDate;
 
     #[ORM\ManyToOne(inversedBy: 'rentalOrders')]
     private ?RentableVehicle $vehicle = null;

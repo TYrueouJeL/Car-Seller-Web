@@ -1,5 +1,9 @@
-.card-list {
+.card-list-3 {
     @apply max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-6 pb-20;
+}
+
+.card-list-2 {
+    @apply max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-6 pb-20;
 }
 
 .card {
@@ -12,6 +16,10 @@
 
 .card-icon-text-orange {
     @apply w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-4 text-xl font-bold;
+}
+
+.card-icon-text-green {
+    @apply w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-4 text-xl font-bold;
 }
 
 .card-title {
