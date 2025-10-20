@@ -17,7 +17,7 @@ class SalableVehicle extends Vehicle
     /**
      * @var Collection<int, SaleOrder>
      */
-    #[ORM\OneToMany(targetEntity: SaleOrder::class, mappedBy: 'vehicle')]
+    #[ORM\OneToMany(targetEntity: SaleOrder::class, mappedBy: 'vehicle', cascade: ['remove'], orphanRemoval: true)]
     private Collection $saleOrders;
 
     public function __construct()

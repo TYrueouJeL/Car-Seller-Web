@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\RentalOrder;
+use App\Entity\UserVehicle;
 use App\Entity\VehicleFeature;
 use App\Form\RentalOrderFormType;
 use App\Repository\RentableVehicleRepository;
+use App\Repository\RentalOrderRepository;
 use App\Repository\SalableVehicleRepository;
 use App\Repository\UserVehicleRepository;
 use App\Repository\VehicleFeatureRepository;
@@ -87,7 +89,7 @@ final class VehicleController extends AbstractController
     }
 
     #[Route('/vehicle/sale/{id}', name: 'app_vehicle_sale_detail')]
-    public function saleDetail(SalableVehicleRepository $salableVehicleRepository, $id, VehicleFeatureRepository $vehicleFeatureRepository): Response
+    public function saleDetail(SalableVehicleRepository $salableVehicleRepository, $id, VehicleFeatureRepository $vehicleFeatureRepository, Request $request, EntityManagerInterface $entityManager, RentalOrderRepository $rentalOrderRepository): Response
     {
         $vehicle = $salableVehicleRepository->find($id);
 
@@ -98,6 +100,29 @@ final class VehicleController extends AbstractController
         $vehicleFeatures = $vehicleFeatureRepository->findBy(['vehicle' => $vehicle->getId()]);
 
         $features = array_map(fn(VehicleFeature $vf) => $vf->getFeature(), $vehicleFeatures);
+
+        if ($request->isMethod('POST') && $request->request->get('action') === 'buy') {
+            $userVehicle = new UserVehicle();
+
+            $userVehicle->setCustomer($this->getUser());
+            $userVehicle->setCategory($vehicle->getCategory());
+            $userVehicle->setModel($vehicle->getModel());
+            $userVehicle->setRegistration($vehicle->getRegistration());
+            $userVehicle->setYear($vehicle->getYear());
+            $userVehicle->setMileage($vehicle->getMileage());
+
+            $entityManager->persist($userVehicle);
+
+            foreach ($vehicleFeatures as $vehicleFeature) {
+                $vehicleFeature->setVehicle($userVehicle);
+                $entityManager->persist($vehicleFeature);
+            }
+
+            $entityManager->remove($vehicle);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_customer');
+        }
 
         return $this->render('vehicle/sales/detail.html.twig', [
             'vehicle' => $vehicle,

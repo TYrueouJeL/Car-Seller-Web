@@ -12,6 +12,31 @@
                 'type': 'sale',
                 'features': features,
             }) }}
+
+            <aside class="md:col-span-1 card">
+                <div class="text-center mb-3">
+                    <h2 class="title">{{ vehicle.price ~ '€' }}</h2>
+                </div>
+
+                <form method="post">
+                    {% for message in app.flashes('success') %}
+                        <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('error') %}
+                        <div class="mb-4 p-3 bg-red-100 text-red-800 rounded">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    {% if app.user %}
+                        <button type="submit" name="action" value="buy" class="form-submit w-full">Acheter</button>
+                    {% else %}
+                        <a href="{{ path('app_login') }}" class="flex-1 bg-gray-600 text-white text-center py-2 rounded hover:bg-gray-500">Connectez-vous pour continuer</a>
+                    {% endif %}
+            </aside>
         </div>
     </div>
 {% endblock %}

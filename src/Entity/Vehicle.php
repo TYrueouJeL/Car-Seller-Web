@@ -59,7 +59,7 @@ class Vehicle
     /**
      * @var Collection<int, VehicleFeature>
      */
-    #[ORM\OneToMany(targetEntity: VehicleFeature::class, mappedBy: 'vehicle')]
+    #[ORM\OneToMany(targetEntity: VehicleFeature::class, mappedBy: 'vehicle', cascade: ['remove'], orphanRemoval: true)]
     private Collection $vehicleFeatures;
 
     public function __construct()
