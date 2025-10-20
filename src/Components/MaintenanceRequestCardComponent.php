@@ -9,5 +9,4 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class MaintenanceRequestCardComponent
 {
     public MaintenanceRequest $maintenanceRequest;
-    public ?string $detail_path = null;
 }

@@ -18,7 +18,7 @@ class MaintenanceRequest
     #[ORM\Column]
     private ?\DateTime $requestDate = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $approvedDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'maintenanceRequests')]

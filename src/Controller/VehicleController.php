@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\MaintenanceRequest;
 use App\Entity\RentalOrder;
 use App\Entity\UserVehicle;
 use App\Entity\VehicleFeature;
+use App\Form\MaintenanceRequestFormType;
 use App\Form\RentalOrderFormType;
 use App\Repository\RentableVehicleRepository;
 use App\Repository\RentalOrderRepository;
@@ -131,7 +133,7 @@ final class VehicleController extends AbstractController
     }
 
     #[Route('/vehicle/userVehicle/{id}', name: 'app_vehicle_userVehicle')]
-    public function userVehicleDetail($id, UserVehicleRepository $userVehicleRepository, VehicleFeatureRepository $vehicleFeatureRepository): Response
+    public function userVehicleDetail($id,EntityManagerInterface $entityManager, Request $request, UserVehicleRepository $userVehicleRepository, VehicleFeatureRepository $vehicleFeatureRepository): Response
     {
         $vehicle = $userVehicleRepository->find($id);
         $user = $this->getUser();
@@ -147,9 +149,36 @@ final class VehicleController extends AbstractController
 
         $features = array_map(fn(VehicleFeature $vf) => $vf->getFeature(), $vehicleFeatures);
 
+        $maintenanceRequestForm = $this->createForm(MaintenanceRequestFormType::class);
+        $maintenanceRequestForm->handleRequest($request);
+
+        if ($maintenanceRequestForm->isSubmitted() && $maintenanceRequestForm->isValid()) {
+            $maintenanceRequest = new MaintenanceRequest();
+
+            $maintenanceRequest->setCustomer($this->getUser());
+            $maintenanceRequest->setVehicle($vehicle);
+
+            $requestDate = $maintenanceRequestForm->get('requestDate')->getData();
+
+            if ($requestDate < new \DateTime()) {
+                $this->addFlash('error', 'La date ne peut pas être dans le passé');
+            } else {
+                $maintenanceRequest->setRequestDate($requestDate);
+                $maintenanceRequest->setType($maintenanceRequestForm->get('type')->getData());
+
+                $entityManager->persist($maintenanceRequest);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'La demande de rendez-vous à été créée.');
+
+                return $this->redirectToRoute('app_vehicle_userVehicle', ['id' => $vehicle->getId()]);
+            }
+        }
+
         return $this->render('vehicle/userVehicle/detail.html.twig', [
             'vehicle' => $vehicle,
             'features' => $features,
+            'maintenanceRequestForm' => $maintenanceRequestForm,
         ]);
     }
 }
