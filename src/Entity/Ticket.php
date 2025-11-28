@@ -25,16 +25,19 @@ class Ticket
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
-    private ?customer $customer = null;
+    private customer $customer;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
-    private ?technician $technician = null;
+    private technician $technician;
 
     /**
      * @var Collection<int, TicketComment>
      */
     #[ORM\OneToMany(targetEntity: TicketComment::class, mappedBy: 'ticket')]
     private Collection $ticketComments;
+
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    private TicketStatus $status;
 
     public function __construct()
     {
@@ -132,6 +135,18 @@ class Ticket
                 $ticketComment->setTicket(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?TicketStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?TicketStatus $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

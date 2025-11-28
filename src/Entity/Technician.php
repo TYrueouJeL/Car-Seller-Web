@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Technician extends User
 {
     #[ORM\Column(type: 'string', length: 20, nullable: true)]
-    private ?string $phoneNumber = null;
+    private string $phoneNumber;
 
     /**
      * @var Collection<int, Ticket>
@@ -41,6 +41,8 @@ class Technician extends User
     public function setPhoneNumber(?string $phoneNumber): static
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
     }
 
     public function getPhoneNumber(): ?string

@@ -11,6 +11,7 @@ use App\Entity\{Customer,
     Feature,
     Technician,
     Category,
+    TicketStatus,
     Type,
     Supplier,
     Piece,
@@ -18,6 +19,7 @@ use App\Entity\{Customer,
     MaintenanceStatus,
     Brand,
     Model,
+    TypePiece,
     UserVehicle,
     RentableVehicle,
     SalableVehicle,
@@ -70,10 +72,22 @@ class AppFixtures extends Fixture
             $t->setLastname($faker->lastName());
             $hashed = $this->hasher->hashPassword($t, 'password123');
             $t->setPassword($hashed);
-            $t->setRoles(['ROLE_TECHNICIAN']);
+            $t->setRoles([$faker->randomElement(['ROLE_TECHNICIAN', 'ROLE_MANAGER', 'ROLE_ADMIN'])]);
+            $t->setPhoneNumber($faker->numerify('0#########'));
             $manager->persist($t);
             $technicians[] = $t;
         }
+
+        $remi = new Technician();
+        $remi->setEmail('remig@remig.com');
+        $remi->setFirstname('Remi');
+        $remi->setLastname('Guerin');
+        $hashed = $this->hasher->hashPassword($remi, 'password123');
+        $remi->setPassword($hashed);
+        $remi->setRoles(['ROLE_TECHNICIAN', 'ROLE_MANAGER', 'ROLE_ADMIN']);
+        $remi->setPhoneNumber($faker->numerify('0#########'));
+        $manager->persist($remi);
+        $technicians[] = $remi;
 
         // ==== CATEGORIES ====
         $categories = [];
@@ -191,6 +205,7 @@ class AppFixtures extends Fixture
             }
 
             $piece->setPrice($faker->randomFloat(2, $min, $max));
+
             $manager->persist($piece);
             $pieces[] = $piece;
         }
@@ -337,14 +352,25 @@ class AppFixtures extends Fixture
             $manager->persist($mnt);
         }
 
+        // ==== TICKET STATUS ====
+
+        $ticketStatuses = [];
+        foreach (["Déclaré", "En cours", "Résolu"] as $ts) {
+            $status = new TicketStatus();
+            $status->setName($ts);
+            $manager->persist($status);
+            $ticketStatuses[] = $status;
+        }
+
         // ==== TICKETS ====
         for ($i = 0; $i < 10; $i++) {
             $ticket = new Ticket();
             $ticket->setTitle($faker->sentence(3));
-            $ticket->setDescription($faker->paragraph());
+            $ticket->setDescription($faker->sentence());
             $ticket->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-2 months')));
             $ticket->setTechnician($faker->randomElement($technicians));
             $ticket->setCustomer($faker->randomElement($customers));
+            $ticket->setStatus($faker->randomElement($ticketStatuses));
             $manager->persist($ticket);
         }
 

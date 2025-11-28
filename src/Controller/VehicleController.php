@@ -60,6 +60,8 @@ final class VehicleController extends AbstractController
 
             if ($startDate > $endDate) {
                 $this->addFlash('error', 'La date de fin ne peut pas être postérieure à la date de début.');
+            } else if ($rentableVehicleRepository->isRentableAt($vehicle, $startDate, $endDate)) {
+                $this->addFlash('error', 'Le véhicule est déjà loué pour cette date.');
             } else {
                 $rentalOrder->setStartDate($rentalOrderForm->get('startDate')->getData());
                 $rentalOrder->setEndDate($rentalOrderForm->get('endDate')->getData());;

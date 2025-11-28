@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\RentableVehicle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @extends ServiceEntityRepository<RentableVehicle>
@@ -14,6 +15,21 @@ class RentableVehicleRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RentableVehicle::class);
+    }
+
+    public function isRentableAt(RentableVehicle $rentableVehicle, \DateTime $startDate, \DateTime $endDate): bool
+    {
+        $query = $this->createQueryBuilder('rv')
+            ->select('rv')
+            ->where('rv.vehicle = :vehicleId')
+            ->andWhere('rv.startDate <= :endDate')
+            ->andWhere('rv.endDate >= :startDate')
+            ->setParameter('vehicleId', $rentableVehicle->getId())
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery();
+
+        return !empty($query->getResult());
     }
 
 //    /**
