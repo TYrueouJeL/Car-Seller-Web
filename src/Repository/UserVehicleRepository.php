@@ -16,6 +16,19 @@ class UserVehicleRepository extends ServiceEntityRepository
         parent::__construct($registry, UserVehicle::class);
     }
 
+    public function findAllWithDetails(): array
+    {
+        $qb = $this->createQueryBuilder('uv')
+            ->leftJoin('uv.model', 'm')
+            ->addSelect('m')
+            ->leftJoin('m.brand', 'b')
+            ->addSelect('b')
+            ->leftJoin('uv.category', 'c')
+            ->addSelect('c');
+
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return UserVehicle[] Returns an array of UserVehicle objects
 //     */

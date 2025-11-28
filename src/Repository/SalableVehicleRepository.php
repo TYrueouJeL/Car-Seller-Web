@@ -16,6 +16,19 @@ class SalableVehicleRepository extends ServiceEntityRepository
         parent::__construct($registry, SalableVehicle::class);
     }
 
+    public function findAllWithDetails(): array
+    {
+        $qb = $this->createQueryBuilder('sv')
+            ->leftJoin('sv.model', 'm')
+            ->addSelect('m')
+            ->leftJoin('m.brand', 'b')
+            ->addSelect('b')
+            ->leftJoin('sv.category', 'c')
+            ->addSelect('c');
+
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return SalableVehicle[] Returns an array of SalableVehicle objects
 //     */

@@ -33,14 +33,12 @@
 
                 <div class="flex gap-2">
                     {% if app.user %}
-                        {{ form_start(rentalOrderForm) }}
-                            <div class="mb-4 text-red-600">
-                                {{ form_errors(rentalOrderForm) }}
-                            </div>
-                            {{ form_row(rentalOrderForm.startDate) }}
-                            {{ form_row(rentalOrderForm.endDate) }}
-                            <button type="submit" class="form-submit">Louer</button>
-                        {{ form_end(rentalOrderForm) }}
+                        <form method="post">
+                            <label for="rental_period" class="block mb-2 font-semibold">Sélectionner la période :</label>
+                            <input type="text" id="rental_period" name="rental_period" placeholder="Sélectionner la période" class="w-full p-2 border rounded mb-4" required>
+                            <div id="total_price" class="text-xl font-semibold text-center my-4"></div>
+                            <button type="submit" class="form-submit w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-500">Louer</button>
+                        </form>
                     {% else %}
                         <a href="{{ path('app_login') }}" class="flex-1 bg-gray-600 text-white text-center py-2 rounded hover:bg-gray-500">Connectez-vous pour continuer</a>
                     {% endif %}
@@ -48,4 +46,51 @@
             </aside>
         </div>
     </div>
+
+    {# Flatpickr CSS et JS via CDN #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const unavailableDates = {{ unavailableDates|json_encode|raw }}; // récupère directement depuis le contrôleur
+
+            flatpickr("#rental_period", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                disable: unavailableDates,
+                minDate: "today"
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const unavailableDates = {{ unavailableDates|json_encode|raw }};
+            const dailyPrice = {{ vehicle.dailyPrice }};
+            const totalPriceDiv = document.getElementById('total_price');
+
+            flatpickr("#rental_period", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                disable: unavailableDates,
+                minDate: "today",
+                onClose: function(selectedDates) {
+                    if (selectedDates.length === 2) {
+                        const start = selectedDates[0];
+                        const end = selectedDates[1];
+
+                        // calcul du nombre de jours
+                        const diffTime = end - start;
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+                        // prix total
+                        const total = diffDays * dailyPrice;
+
+                        totalPriceDiv.innerHTML =
+                            `Total : <span class="text-blue-600">${total} €</span> (${diffDays} jours)`;
+                    }
+                }
+            });
+        });
+
+    </script>
 {% endblock %}

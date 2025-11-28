@@ -25,7 +25,7 @@ final class VehicleController extends AbstractController
     #[Route('/vehicle/rental', name: 'app_vehicle_rental')]
     public function rentals(RentableVehicleRepository $rentableVehicleRepository): Response
     {
-        $vehicles = $rentableVehicleRepository->findAll();
+        $vehicles = $rentableVehicleRepository->findAllWithDetails();
 
         return $this->render('vehicle/rental/index.html.twig', [
             'vehicles' => $vehicles,
@@ -45,47 +45,43 @@ final class VehicleController extends AbstractController
 
         $features = array_map(fn(VehicleFeature $vf) => $vf->getFeature(), $vehicleFeatures);
 
-        $rentalOrderForm = $this->createForm(RentalOrderFormType::class);
-        $rentalOrderForm->handleRequest($request);
+        if ($request->isMethod('POST')) {
 
-        if ($rentalOrderForm->isSubmitted() && $rentalOrderForm->isValid()) {
+            $period = $request->request->get('rental_period');
+
+            if (!$period || strpos($period, ' to ') === false) {
+                $this->addFlash('error', 'Veuillez sélectionner une période valide.');
+                return $this->redirectToRoute('app_vehicle_rental_detail', ['id' => $id]);
+            }
+
+            [$startDate, $endDate] = explode(' to ', $period);
+            $startDate = new \DateTime($startDate);
+            $endDate = new \DateTime($endDate);
+
             $rentalOrder = new RentalOrder();
-
             $rentalOrder->setCustomer($this->getUser());
             $rentalOrder->setVehicle($vehicle);
+            $rentalOrder->setStartDate($startDate);
+            $rentalOrder->setEndDate($endDate);
             $rentalOrder->setCreatedAt(new \DateTimeImmutable());
-
-            $startDate = $rentalOrderForm->get('startDate')->getData();
-            $endDate = $rentalOrderForm->get('endDate')->getData();
-
-            if ($startDate > $endDate) {
-                $this->addFlash('error', 'La date de fin ne peut pas être postérieure à la date de début.');
-            } else if ($rentableVehicleRepository->isRentableAt($vehicle, $startDate, $endDate)) {
-                $this->addFlash('error', 'Le véhicule est déjà loué pour cette date.');
-            } else {
-                $rentalOrder->setStartDate($rentalOrderForm->get('startDate')->getData());
-                $rentalOrder->setEndDate($rentalOrderForm->get('endDate')->getData());;
-
-                $entityManager->persist($rentalOrder);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Réservation créée.');
-
-                return $this->redirectToRoute('app_vehicle_rental_detail', ['id' => $vehicle->getId()]);
-            }
+            $entityManager->persist($rentalOrder);
+            $entityManager->flush();
+            $this->addFlash('success', 'Réservation enregistrée');
         }
+
+        $unavailableDates = $rentableVehicleRepository->findUnavailableDates($vehicle);
 
         return $this->render('vehicle/rental/detail.html.twig', [
             'vehicle' => $vehicle,
             'features' => $features,
-            'rentalOrderForm' => $rentalOrderForm,
+            'unavailableDates' => $unavailableDates,
         ]);
     }
 
     #[Route('/vehicle/sale', name: 'app_vehicle_sale')]
     public function sales(SalableVehicleRepository $salableVehicleRepository): Response
     {
-        $vehicles = $salableVehicleRepository->findAll();
+        $vehicles = $salableVehicleRepository->findAllWithDetails();
 
         return $this->render('vehicle/sales/index.html.twig', [
             'vehicles' => $vehicles,

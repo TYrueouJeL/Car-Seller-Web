@@ -32,6 +32,42 @@ class RentableVehicleRepository extends ServiceEntityRepository
         return !empty($query->getResult());
     }
 
+    public function findAllWithDetails(): array
+    {
+        $qb = $this->createQueryBuilder('rv')
+            ->leftJoin('rv.model', 'm')
+            ->addSelect('m')
+            ->leftJoin('m.brand', 'b')
+            ->addSelect('b')
+            ->leftJoin('rv.category', 'c')
+            ->addSelect('c');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findUnavailableDates(RentableVehicle $rentableVehicle): array
+    {
+        $unavailableDates = [];
+
+        foreach ($rentableVehicle->getRentalOrders() as $rentalOrder)
+        {
+            $start = $rentalOrder->getStartDate()->format('Y-m-d');
+            $end = $rentalOrder->getEndDate()->format('Y-m-d');
+
+            $period = new \DatePeriod(
+                new \DateTime($start),
+                new \DateInterval('P1D'),
+                (new \DateTime($end))->modify('+1 day')
+            );
+
+            foreach ($period as $date) {
+                $unavailableDates[] = $date->format('Y-m-d');
+            }
+        }
+
+        return $unavailableDates;
+    }
+
 //    /**
 //     * @return RentableVehicle[] Returns an array of RentableVehicle objects
 //     */
