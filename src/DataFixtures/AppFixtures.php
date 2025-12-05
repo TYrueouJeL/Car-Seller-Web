@@ -362,6 +362,8 @@ class AppFixtures extends Fixture
             $ticketStatuses[] = $status;
         }
 
+        $tickets = [];
+
         // ==== TICKETS ====
         for ($i = 0; $i < 10; $i++) {
             $ticket = new Ticket();
@@ -371,6 +373,7 @@ class AppFixtures extends Fixture
             $ticket->setTechnician($faker->randomElement($technicians));
             $ticket->setCustomer($faker->randomElement($customers));
             $ticket->setStatus($faker->randomElement($ticketStatuses));
+            $tickets[] = $ticket;
             $manager->persist($ticket);
         }
 
@@ -446,6 +449,20 @@ class AppFixtures extends Fixture
             $sol->setStockMovement($faker->randomElement($movements));
             $sol->setSupplyOrder($faker->randomElement($supplyOrders));
             $manager->persist($sol);
+        }
+
+        // ==== TICKET COMMENTS FOR EACH TICKET ====
+        foreach ($tickets as $ticket) {
+            $comments = [];
+            for ($i = 0; $i < 3; $i++) {
+                $cmt = new TicketComment();
+                $cmt->setComment($faker->sentence());
+                $cmt->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-1 month')));
+                $cmt->setTicket($ticket);
+                $cmt->setAuthor($faker->randomElement([$ticket->getCustomer(), $ticket->getTechnician()]));
+                $manager->persist($cmt);
+                $comments[] = $cmt;
+            }
         }
 
         // Final flush

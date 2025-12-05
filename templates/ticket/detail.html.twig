@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket {{ ticket.id }}{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-8 py-8">
+        <h1 class="title text-center">Détail du ticket #{{ ticket.id }}</h1>
+
+        <div class="mt-10 max-w-3xl mx-auto">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4">{{ ticket.title }}</h2>
+                <p class="mb-4">{{ ticket.description }}</p>
+                <p class="text-sm text-gray-600 mb-2">Statut: {{ ticket.status.name }}</p>
+                <p class="text-sm text-gray-600 mb-2">Créé le: {{ ticket.createdAt|date('d/m/Y H:i') }}</p>
+            </div>
+        </div>
+        
+        <h1 class="title text-center mt-20">Conversation</h1>
+
+        <div class="mt-10 max-w-3xl mx-auto">
+            {% for comment in ticketComments %}
+                {% set is_me = comment.author is not null and app.user is not null and comment.author.id == app.user.id %}
+                <div class="p-4 mb-4 rounded shadow {% if is_me %}bg-blue-50{% else %}bg-gray-50{% endif %}">
+                    {% if is_me %}<p class="text-sm font-semibold text-blue-700">Vous</p>{% endif %}
+                    <p class="mb-2">{{ comment.comment }}</p>
+                    <p class="text-sm text-gray-600">
+                        Par
+                        {% if comment.author is not null %}
+                            {{ comment.author.firstname }} {{ comment.author.lastname }}
+                        {% else %}
+                            Anonyme
+                        {% endif %}
+                        le {{ comment.createdAt|date('d/m/Y H:i') }}
+                    </p>
+                </div>
+            {% else %}
+                <p class="text-center mt-6">Aucun commentaire pour ce ticket.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
