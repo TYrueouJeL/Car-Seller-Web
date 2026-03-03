@@ -68,6 +68,10 @@ final class TicketController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        if ($ticketComment->getTicket()->getStatus()->getName() == 'Résolu') {
+            return $this->redirectToRoute('app_ticket_detail', ['id' => $ticketComment->getTicket()->getId()]);
+        }
+
         $manager->remove($ticketComment);
         $manager->flush();
 

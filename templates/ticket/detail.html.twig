@@ -50,7 +50,7 @@
                     <div class="flex justify-between items-center mb-2">
                         {% if is_me %}<p class="text-sm font-semibold text-blue-700">Vous</p>{% endif %}
 
-                        {% if is_me %}
+                        {% if is_me and isResolved == false %}
                             <div class="flex gap-2">
                                 <form method="post" action="{{ path('app_ticket_comment_delete', {'id': comment.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');" class="inline">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
