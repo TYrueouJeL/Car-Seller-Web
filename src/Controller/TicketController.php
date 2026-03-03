@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Ticket;
+use App\Form\TicketFormType;
 use App\Repository\TicketCommentRepository;
 use App\Repository\TicketRepository;
+use App\Repository\TicketStatusRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -23,6 +28,31 @@ final class TicketController extends AbstractController
 
         return $this->render('ticket/index.html.twig', [
             'tickets' => $tickets,
+        ]);
+    }
+
+    #[Route('/ticket/new', name: 'app_ticket_new')]
+    public function new(Request $request, TicketStatusRepository $ticketStatusRepository, EntityManagerInterface $manager): Response
+    {
+        $ticket = new Ticket();
+        $ticketStatus = $ticketStatusRepository->findOneBy(['name' => 'Déclaré']);
+
+        $form = $this->createForm(TicketFormType::class, $ticket);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ticket = $form->getData();
+            $ticket->setCustomer($this->getUser());
+            $ticket->setCreatedAt(new \DateTimeImmutable());
+            $ticket->setStatus($ticketStatus);
+            $manager->persist($ticket);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_ticket');
+        }
+
+        return $this->render('ticket/new.html.twig', [
+            'form' => $form,
         ]);
     }
 

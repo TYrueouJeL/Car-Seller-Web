@@ -25,10 +25,10 @@ class Ticket
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
-    private customer $customer;
+    private Customer $customer;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
-    private technician $technician;
+    private Technician $technician;
 
     /**
      * @var Collection<int, TicketComment>
@@ -85,24 +85,24 @@ class Ticket
         return $this;
     }
 
-    public function getCustomer(): ?customer
+    public function getCustomer(): ?Customer
     {
         return $this->customer;
     }
 
-    public function setCustomer(?customer $customer): static
+    public function setCustomer(?Customer $customer): static
     {
         $this->customer = $customer;
 
         return $this;
     }
 
-    public function getTechnician(): ?technician
+    public function getTechnician(): ?Technician
     {
         return $this->technician;
     }
 
-    public function setTechnician(?technician $technician): static
+    public function setTechnician(?Technician $technician): static
     {
         $this->technician = $technician;
 

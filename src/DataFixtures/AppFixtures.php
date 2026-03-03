@@ -63,6 +63,16 @@ class AppFixtures extends Fixture
             $customers[] = $c;
         }
 
+        $customer = new Customer();
+        $customer->setEmail('customer@customer.com');
+        $customer->setFirstname('Customer');
+        $customer->setLastname('Customer');
+        $hashed = $this->hasher->hashPassword($c, 'password123');
+        $customer->setPassword($hashed);
+        $customer->setRoles(['ROLE_CUSTOMER']);
+        $manager->persist($customer);
+        $customers[] = $customer;
+
         // ==== TECHNICIANS ====
         $technicians = [];
         for ($i = 0; $i < 10; $i++) {
@@ -365,6 +375,18 @@ class AppFixtures extends Fixture
         $tickets = [];
 
         // ==== TICKETS ====
+        for ($i = 0; $i < 10; $i++) {
+            $ticket = new Ticket();
+            $ticket->setTitle($faker->sentence(3));
+            $ticket->setDescription($faker->sentence());
+            $ticket->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-2 months')));
+            $ticket->setTechnician($faker->randomElement($technicians));
+            $ticket->setCustomer($faker->randomElement($customers));
+            $ticket->setStatus($faker->randomElement($ticketStatuses));
+            $tickets[] = $ticket;
+            $manager->persist($ticket);
+        }
+
         for ($i = 0; $i < 10; $i++) {
             $ticket = new Ticket();
             $ticket->setTitle($faker->sentence(3));
