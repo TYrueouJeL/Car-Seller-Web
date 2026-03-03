@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Ticket;
+use App\Entity\TicketComment;
+use App\Form\TicketCommentFormType;
 use App\Form\TicketFormType;
 use App\Repository\TicketCommentRepository;
 use App\Repository\TicketRepository;
@@ -56,8 +58,24 @@ final class TicketController extends AbstractController
         ]);
     }
 
+    #[Route('/ticket/comment/{id}/delete', name: 'app_ticket_comment_delete')]
+    public function deleteComment(TicketCommentRepository $ticketCommentRepository, $id, Request $request, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        $ticketComment = $ticketCommentRepository->find($id);
+
+        if (!$user || $user != $ticketComment->getAuthor()) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        $manager->remove($ticketComment);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_ticket_detail', ['id' => $ticketComment->getTicket()->getId()]);
+    }
+
     #[Route('/ticket/{id}', name: 'app_ticket_detail')]
-    public function detail(TicketRepository $ticketRepository, $id, TicketCommentRepository $ticketCommentRepository): Response
+    public function detail(TicketRepository $ticketRepository, $id, TicketCommentRepository $ticketCommentRepository, Request $request, EntityManagerInterface $manager): Response
     {
         $user = $this->getUser();
 
@@ -69,9 +87,28 @@ final class TicketController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        $ticketComment = new TicketComment();
+
+        $form = $this->createForm(TicketCommentFormType::class, $ticketComment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ticketComment = $form->getData();
+            $ticketComment->setTicket($ticket);
+            $ticketComment->setAuthor($user);
+            $ticketComment->setCreatedAt(new \DateTimeImmutable());
+            $manager->persist($ticketComment);
+            $manager->flush();
+
+            $ticketComments = $ticketCommentRepository->findBy(['ticket' => $ticket->getId()], ['createdAt' => 'DESC']);
+            $ticketComment = new TicketComment();
+            $form = $this->createForm(TicketCommentFormType::class, $ticketComment);
+        }
+
         return $this->render('ticket/detail.html.twig', [
             'ticket' => $ticket,
             'ticketComments' => $ticketComments,
+            'form' => $form,
         ]);
     }
 }
