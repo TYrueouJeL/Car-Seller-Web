@@ -26,7 +26,7 @@ class Feedback
     private ?RentableVehicle $vehicle = null;
 
     #[ORM\ManyToOne(inversedBy: 'feedback')]
-    private ?customer $customer = null;
+    private ?Customer $customer = null;
 
     public function getId(): ?int
     {
