@@ -1,80 +1,94 @@
+{# ticket/show.html.twig #}
 {% extends 'base.html.twig' %}
-
-{% block title %}Ticket {{ ticket.id }}{% endblock %}
-
+{% block title %}Ticket #{{ ticket.id }}{% endblock %}
 {% block body %}
-    <div class="container mx-auto px-8 py-8">
-        <h1 class="title text-center">Détail du ticket #{{ ticket.id }}</h1>
 
-        <div class="mt-10 max-w-3xl mx-auto">
-            <div class="card">
-                <h2 class="text-2xl font-bold mb-4">{{ ticket.title }}</h2>
-                <p class="mb-4">{{ ticket.description }}</p>
-                <p class="text-sm text-gray-600 mb-2">Statut: {{ ticket.status.name }}</p>
-                <p class="text-sm text-gray-600 mb-2">Créé le: {{ ticket.createdAt|date('d/m/Y H:i') }}</p>
-            </div>
+{% set isResolved = ticket.status is not null and ticket.status.name == 'Résolu' %}
+
+<div class="min-h-[calc(100vh-64px)] bg-slate-950 px-6 py-14 relative">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_0%,rgba(37,99,235,0.08),transparent)] pointer-events-none"></div>
+
+  <div class="max-w-3xl mx-auto relative flex flex-col gap-8">
+
+    <!-- Ticket info -->
+    <div>
+      <p class="text-blue-400 text-xs font-semibold tracking-widest uppercase mb-2">Ticket #{{ ticket.id }}</p>
+      <h1 class="text-3xl font-black text-white tracking-tight mb-6">{{ ticket.title }}</h1>
+
+      <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 flex flex-col gap-4">
+        <p class="text-white/70 text-sm leading-relaxed">{{ ticket.description }}</p>
+        <div class="flex items-center gap-4 pt-4 border-t border-white/6">
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full
+            {% if ticket.status.name == 'Résolu' %}text-emerald-400 bg-emerald-500/10 border border-emerald-500/20
+            {% elseif ticket.status.name == 'En cours' %}text-yellow-400 bg-yellow-500/10 border border-yellow-500/20
+            {% else %}text-blue-400 bg-blue-500/10 border border-blue-500/20{% endif %}">
+            {{ ticket.status.name }}
+          </span>
+          <span class="text-white/25 text-xs">Créé le {{ ticket.createdAt|date('d/m/Y H:i') }}</span>
         </div>
-
-        <h1 class="title text-center mt-20">Conversation</h1>
-
-        <div class="mt-10 max-w-3xl mx-auto">
-            {% set isResolved = ticket.status is not null and ticket.status.name == 'Résolu' %}
-
-            {{ form_start(form) }}
-            <div class="mb-6">
-                {{ form_label(form.comment, 'Commentaire', {'label_attr': {'class': 'block font-bold mb-2'}}) }}
-                {{ form_widget(form.comment, {
-                    'disabled': isResolved,
-                    'attr': {
-                        'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500'
-                    }
-                }) }}
-                {{ form_errors(form.comment) }}
-            </div>
-
-            <div class="flex gap-4 justify-center mb-4">
-                <button
-                    type="submit"
-                    {% if isResolved %}disabled{% endif %}
-                    class="bg-blue-500 disabled:bg-gray-400 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200"
-                >
-                    Ajouter un commentaire
-                </button>
-            </div>
-            {{ form_end(form) }}
-
-
-            {% for comment in ticketComments %}
-                {% set is_me = comment.author is not null and app.user is not null and comment.author.id == app.user.id %}
-                <div class="p-4 mb-4 rounded shadow {% if is_me %}bg-blue-50{% else %}bg-gray-50{% endif %}">
-                    <div class="flex justify-between items-center mb-2">
-                        {% if is_me %}<p class="text-sm font-semibold text-blue-700">Vous</p>{% endif %}
-
-                        {% if is_me and isResolved == false %}
-                            <div class="flex gap-2">
-                                <form method="post" action="{{ path('app_ticket_comment_delete', {'id': comment.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');" class="inline">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
-                                    <button type="submit" class="text-sm text-red-600 hover:underline">Supprimer</button>
-                                </form>
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <p class="mb-2">{{ comment.comment }}</p>
-
-                    <p class="text-sm text-gray-600">
-                        Par
-                        {% if comment.author is not null %}
-                            {{ comment.author.firstname }} {{ comment.author.lastname }}
-                        {% else %}
-                            Anonyme
-                        {% endif %}
-                        le {{ comment.createdAt|date('d/m/Y H:i') }}
-                    </p>
-                </div>
-            {% else %}
-                <p class="text-center mt-6">Aucun commentaire pour ce ticket.</p>
-            {% endfor %}
-        </div>
+      </div>
     </div>
+
+    <!-- Conversation -->
+    <div>
+      <p class="text-white/35 text-xs uppercase tracking-widest mb-6">Conversation</p>
+
+      <!-- Formulaire -->
+      {{ form_start(form, {'attr': {'class': 'mb-8'}}) }}
+        <div class="flex flex-col gap-3">
+          {{ form_widget(form.comment, {
+            'disabled': isResolved,
+            'attr': {
+              'class': 'w-full bg-slate-900 border border-white/10 text-white placeholder-white/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500/60 transition-colors resize-none h-24 disabled:opacity-40 disabled:cursor-not-allowed',
+              'placeholder': isResolved ? 'Ce ticket est résolu.' : 'Écrivez votre message…'
+            }
+          }) }}
+          {{ form_errors(form.comment) }}
+          <div class="flex justify-end">
+            <button type="submit" {% if isResolved %}disabled{% endif %}
+              class="bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 text-sm shadow-[0_4px_16px_rgba(37,99,235,0.25)]">
+              Envoyer
+            </button>
+          </div>
+        </div>
+      {{ form_end(form) }}
+
+      <!-- Commentaires -->
+      <div class="flex flex-col gap-3">
+        {% for comment in ticketComments %}
+          {% set is_me = comment.author is not null and app.user is not null and comment.author.id == app.user.id %}
+          <div class="rounded-2xl px-5 py-4 flex flex-col gap-2
+            {{ is_me ? 'bg-blue-600/10 border border-blue-500/20 ml-8' : 'bg-slate-900 border border-white/8 mr-8' }}">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-semibold {{ is_me ? 'text-blue-400' : 'text-white/50' }}">
+                {% if is_me %}
+                  Vous
+                {% elseif comment.author is not null %}
+                  {{ comment.author.firstname }} {{ comment.author.lastname }}
+                {% else %}
+                  Anonyme
+                {% endif %}
+              </span>
+              <div class="flex items-center gap-3">
+                <span class="text-white/25 text-xs">{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+                {% if is_me and not isResolved %}
+                  <form method="post" action="{{ path('app_ticket_comment_delete', {'id': comment.id}) }}"
+                    onsubmit="return confirm('Supprimer ce commentaire ?');" class="inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                    <button type="submit" class="text-xs text-red-400/60 hover:text-red-400 transition-colors">Supprimer</button>
+                  </form>
+                {% endif %}
+              </div>
+            </div>
+            <p class="text-white/75 text-sm leading-relaxed">{{ comment.comment }}</p>
+          </div>
+        {% else %}
+          <p class="text-center text-white/25 italic py-8">Aucun commentaire pour ce ticket.</p>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
 {% endblock %}

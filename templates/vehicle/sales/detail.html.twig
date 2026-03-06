@@ -1,42 +1,63 @@
+{# sale/show.html.twig #}
 {% extends 'base.html.twig' %}
-
-{% block title %}Vente{% endblock %}
-
+{% block title %}Vente — {{ vehicle.model.name }}{% endblock %}
 {% block body %}
-    <div class="container mx-auto px-8 py-8">
-        <h1 class="title text-center">{{ vehicle.model.name }}</h1>
 
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {{ component('vehicle_detail', {
-                'vehicle': vehicle,
-                'type': 'sale',
-                'features': features,
-            }) }}
+<div class="min-h-[calc(100vh-64px)] bg-slate-950 px-6 py-14 relative">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_0%,rgba(249,115,22,0.08),transparent)] pointer-events-none"></div>
 
-            <aside class="md:col-span-1 card">
-                <div class="text-center mb-3">
-                    <h2 class="title">{{ vehicle.price ~ '€' }}</h2>
-                </div>
+  <div class="max-w-7xl mx-auto relative">
 
-                <form method="post">
-                    {% for message in app.flashes('success') %}
-                        <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-
-                    {% for message in app.flashes('error') %}
-                        <div class="mb-4 p-3 bg-red-100 text-red-800 rounded">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-
-                    {% if app.user %}
-                        <button type="submit" name="action" value="buy" class="form-submit w-full">Acheter</button>
-                    {% else %}
-                        <a href="{{ path('app_login') }}" class="flex-1 bg-gray-600 text-white text-center py-2 rounded hover:bg-gray-500">Connectez-vous pour continuer</a>
-                    {% endif %}
-            </aside>
-        </div>
+    <div class="text-center mb-10">
+      <p class="text-orange-400 text-xs font-semibold tracking-widest uppercase mb-3">Vente</p>
+      <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight">{{ vehicle.model.name }}</h1>
     </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Détail véhicule -->
+      <div class="md:col-span-2">
+        {{ component('vehicle_detail', {
+          'vehicle': vehicle,
+          'type': 'sale',
+          'features': features,
+        }) }}
+      </div>
+
+      <!-- Sidebar achat -->
+      <aside class="md:col-span-1">
+        <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 sticky top-24">
+
+          <div class="text-center mb-6 pb-6 border-b border-white/8">
+            <p class="text-white/40 text-xs uppercase tracking-widest mb-1">Prix de vente</p>
+            <p class="text-4xl font-black text-white">{{ vehicle.price }}<span class="text-orange-400 text-2xl"> €</span></p>
+          </div>
+
+          {% for message in app.flashes('success') %}
+            <div class="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 rounded-lg text-sm">{{ message }}</div>
+          {% endfor %}
+          {% for message in app.flashes('error') %}
+            <div class="mb-4 p-3 bg-red-500/10 border border-red-500/25 text-red-400 rounded-lg text-sm">{{ message }}</div>
+          {% endfor %}
+
+          {% if app.user %}
+            <form method="post">
+              <button type="submit" name="action" value="buy"
+                class="w-full bg-orange-600 hover:bg-orange-500 text-white font-semibold py-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-[0_4px_16px_rgba(249,115,22,0.3)]">
+                Acheter maintenant
+              </button>
+            </form>
+          {% else %}
+            <a href="{{ path('app_login') }}"
+              class="block w-full bg-slate-800 hover:bg-slate-700 border border-white/10 text-white/60 hover:text-white text-center py-3 rounded-xl transition-all duration-200 text-sm">
+              Connectez-vous pour continuer
+            </a>
+          {% endif %}
+
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

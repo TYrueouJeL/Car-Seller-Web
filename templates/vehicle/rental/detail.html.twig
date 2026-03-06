@@ -1,96 +1,100 @@
+{# rental/show.html.twig #}
 {% extends 'base.html.twig' %}
-
-{% block title %}Location{% endblock %}
-
+{% block title %}Location — {{ vehicle.model.name }}{% endblock %}
 {% block body %}
-    <div class="container mx-auto px-8 py-8">
-        <h1 class="title text-center">{{ vehicle.model.name }}</h1>
 
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {{ component('vehicle_detail', {
-                'vehicle': vehicle,
-                'type': 'rental',
-                'features': features,
-                'customer': app.user,
-            }) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-            <aside class="md:col-span-1 card">
-                <div class="text-center mb-3">
-                    <div class="title">{{ vehicle.dailyPrice ~ ' €/jour' }}</div>
-                </div>
+<div class="min-h-[calc(100vh-64px)] bg-slate-950 px-6 py-14 relative">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_0%,rgba(37,99,235,0.1),transparent)] pointer-events-none"></div>
 
-                {% for message in app.flashes('success') %}
-                    <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+  <div class="max-w-7xl mx-auto relative">
 
-                {% for message in app.flashes('error') %}
-                    <div class="mb-4 p-3 bg-red-100 text-red-800 rounded">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-
-                <div class="flex gap-2">
-                    {% if app.user %}
-                        <form method="post">
-                            <label for="rental_period" class="block mb-2 font-semibold">Sélectionner la période :</label>
-                            <input type="text" id="rental_period" name="rental_period" placeholder="Sélectionner la période" class="w-full p-2 border rounded mb-4" required>
-                            <div id="total_price" class="text-xl font-semibold text-center my-4"></div>
-                            <button type="submit" class="form-submit w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-500">Louer</button>
-                        </form>
-                    {% else %}
-                        <a href="{{ path('app_login') }}" class="flex-1 bg-gray-600 text-white text-center py-2 rounded hover:bg-gray-500">Connectez-vous pour continuer</a>
-                    {% endif %}
-                </div>
-            </aside>
-        </div>
+    <div class="text-center mb-10">
+      <p class="text-blue-400 text-xs font-semibold tracking-widest uppercase mb-3">Location</p>
+      <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight">{{ vehicle.model.name }}</h1>
     </div>
 
-    {# Flatpickr CSS et JS via CDN #}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const unavailableDates = {{ unavailableDates|json_encode|raw }}; // récupère directement depuis le contrôleur
+      <!-- Détail véhicule -->
+      <div class="md:col-span-2">
+        {{ component('vehicle_detail', {
+          'vehicle': vehicle,
+          'type': 'rental',
+          'features': features,
+          'customer': app.user,
+        }) }}
+      </div>
 
-            flatpickr("#rental_period", {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                disable: unavailableDates,
-                minDate: "today"
-            });
-        });
+      <!-- Sidebar réservation -->
+      <aside class="md:col-span-1">
+        <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 sticky top-24">
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const unavailableDates = {{ unavailableDates|json_encode|raw }};
-            const dailyPrice = {{ vehicle.dailyPrice }};
-            const totalPriceDiv = document.getElementById('total_price');
+          <div class="text-center mb-6 pb-6 border-b border-white/8">
+            <p class="text-white/40 text-xs uppercase tracking-widest mb-1">Prix journalier</p>
+            <p class="text-4xl font-black text-white">{{ vehicle.dailyPrice }}<span class="text-blue-400 text-2xl"> €</span></p>
+            <p class="text-white/30 text-sm mt-1">par jour</p>
+          </div>
 
-            flatpickr("#rental_period", {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                disable: unavailableDates,
-                minDate: "today",
-                onClose: function(selectedDates) {
-                    if (selectedDates.length === 2) {
-                        const start = selectedDates[0];
-                        const end = selectedDates[1];
+          {% for message in app.flashes('success') %}
+            <div class="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 rounded-lg text-sm">{{ message }}</div>
+          {% endfor %}
+          {% for message in app.flashes('error') %}
+            <div class="mb-4 p-3 bg-red-500/10 border border-red-500/25 text-red-400 rounded-lg text-sm">{{ message }}</div>
+          {% endfor %}
 
-                        // calcul du nombre de jours
-                        const diffTime = end - start;
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+          {% if app.user %}
+            <form method="post" class="flex flex-col gap-4">
+              <div>
+                <label for="rental_period" class="block text-white/50 text-xs uppercase tracking-wider mb-2">Période de location</label>
+                <input type="text" id="rental_period" name="rental_period"
+                  placeholder="Sélectionner les dates"
+                  class="w-full bg-slate-800 border border-white/10 text-white placeholder-white/25 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500/50 transition-colors"
+                  required>
+              </div>
 
-                        // prix total
-                        const total = diffDays * dailyPrice;
+              <div id="total_price" class="text-center text-white/50 text-sm min-h-[2rem]"></div>
 
-                        totalPriceDiv.innerHTML =
-                            `Total : <span class="text-blue-600">${total} €</span> (${diffDays} jours)`;
-                    }
-                }
-            });
-        });
+              <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-[0_4px_16px_rgba(37,99,235,0.3)]">
+                Réserver
+              </button>
+            </form>
+          {% else %}
+            <a href="{{ path('app_login') }}"
+              class="block w-full bg-slate-800 hover:bg-slate-700 border border-white/10 text-white/60 hover:text-white text-center py-3 rounded-xl transition-all duration-200 text-sm">
+              Connectez-vous pour continuer
+            </a>
+          {% endif %}
 
-    </script>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const unavailableDates = {{ unavailableDates|json_encode|raw }};
+  const dailyPrice = {{ vehicle.dailyPrice }};
+  const totalPriceDiv = document.getElementById('total_price');
+
+  flatpickr("#rental_period", {
+    mode: "range",
+    dateFormat: "Y-m-d",
+    disable: unavailableDates,
+    minDate: "today",
+    onClose: function(selectedDates) {
+      if (selectedDates.length === 2) {
+        const diffDays = Math.ceil((selectedDates[1] - selectedDates[0]) / (1000 * 60 * 60 * 24)) + 1;
+        const total = diffDays * dailyPrice;
+        totalPriceDiv.innerHTML = `<span class="text-white/40">Total :</span> <span class="text-blue-400 font-bold text-lg">${total} €</span> <span class="text-white/30">(${diffDays} jours)</span>`;
+      }
+    }
+  });
+});
+</script>
+
 {% endblock %}

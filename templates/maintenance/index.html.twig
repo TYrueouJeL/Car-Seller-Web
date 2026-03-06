@@ -1,29 +1,47 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Rendez-vous{% endblock %}
-
 {% block body %}
-    <div class="container mx-auto px-8 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-6">
-            <div>
-                <h3 class="title">Rendez-vous</h3>
 
-                {{ component('card_list', {
-                    'items': maintenances,
-                    'type': 'maintenance',
-                    'column_count': 1,
-                }) }}
-            </div>
+<div class="min-h-[calc(100vh-64px)] bg-slate-950 px-6 py-14 relative">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_0%,rgba(16,185,129,0.08),transparent)] pointer-events-none"></div>
 
-            <div>
-                <h3 class="title mt-12 md:mt-0">Demandes de rendez-vous</h3>
+  <div class="max-w-7xl mx-auto relative">
 
-                {{ component('card_list', {
-                    'items': maintenanceRequests,
-                    'type': 'maintenanceRequest',
-                    'column_count': 1,
-                }) }}
-            </div>
-        </div>
+    <div class="text-center mb-12">
+      <p class="text-emerald-400 text-xs font-semibold tracking-widest uppercase mb-3">Espace personnel</p>
+      <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight">Rendez-vous</h1>
     </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Rendez-vous confirmés -->
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
+          <h3 class="text-white font-bold text-lg">Rendez-vous confirmés</h3>
+        </div>
+        {{ component('card_list', {
+          'items': maintenances,
+          'type': 'maintenance',
+          'column_count': 1,
+        }) }}
+      </div>
+
+      <!-- Demandes en attente -->
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <span class="w-2 h-2 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(234,179,8,0.6)]"></span>
+          <h3 class="text-white font-bold text-lg">Demandes en attente</h3>
+        </div>
+        {{ component('card_list', {
+          'items': maintenanceRequests,
+          'type': 'maintenanceRequest',
+          'column_count': 1,
+        }) }}
+      </div>
+
+    </div>
+  </div>
+</div>
+
 {% endblock %}

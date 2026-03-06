@@ -1,25 +1,39 @@
 {% block body %}
-    <header class="bg-blue-600 text-white p-4 mb-4">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between">
-                <h1 class="text-2xl cursor-default transition duration-300 hover:text-blue-200">CarSeller</h1>
-                <nav>
-                    <div class="flex gap-2">
-                        <a href="{{ path('app_home') }}" class="header-button">Accueil</a>
-                        <a href="{{ path('app_vehicle_rental') }}" class="header-button">Locations</a>
-                        <a href="{{ path('app_vehicle_sale') }}" class="header-button">Ventes</a>
-                        {% if app.user %}
-                            <a href="{{ path('app_maintenance') }}" class="header-button">Rendez-vous</a>
-                            <a href="{{ path('app_ticket') }}" class="header-button">Mes tickets</a>
-                            <a href="{{ path('app_customer') }}" class="header-button">Mon compte</a>
-                            <a href="{{ path('app_logout') }}" class="header-button">Déconnexion</a>
-                        {% else %}
-                            <a href="{{ path('app_login') }}" class="header-button">Connexion</a>
-                            <a href="{{ path('app_register') }}" class="header-button">Inscription</a>
-                        {% endif %}
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
+<header class="sticky top-0 z-50 bg-slate-900/85 backdrop-blur-md border-b border-white/10 shadow-[0_4px_32px_rgba(0,0,0,0.3)]">
+  <div class="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between gap-8">
+
+    <!-- Logo -->
+    <a href="{{ path('app_home') }}" class="flex items-center gap-2 no-underline group">
+      <span class="text-2xl text-blue-400 leading-none">⬡</span>
+      <span class="font-bold text-xl tracking-tight text-white font-sans group-hover:opacity-80 transition-opacity">
+        Car<strong class="text-blue-400">Seller</strong>
+      </span>
+    </a>
+
+    <!-- Nav -->
+    <nav class="flex items-center gap-1 text-sm">
+      <a href="{{ path('app_home') }}" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Accueil</a>
+      <a href="{{ path('app_vehicle_rental') }}" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Locations</a>
+      <a href="{{ path('app_vehicle_sale') }}" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Ventes</a>
+
+      <div class="w-px h-5 bg-white/15 mx-2"></div>
+
+      {% if app.user %}
+        <a href="{{ path('app_maintenance') }}" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Rendez-vous</a>
+        <a href="{{ path('app_ticket') }}" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Mes tickets</a>
+        <a href="{{ path('app_customer') }}" class="flex items-center gap-1.5 text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">
+          <span class="inline-flex items-center justify-center w-5 h-5 bg-blue-500 text-white rounded-full text-xs font-bold">
+            {{ app.user.email|first|upper }}
+          </span>
+          Mon compte
+        </a>
+        <a href="{{ path('app_logout') }}" class="text-red-400/75 hover:text-red-400 hover:bg-red-400/10 px-3 py-1.5 rounded-md transition-all duration-200">Déconnexion</a>
+      {% else %}
+        <a href="{{ path('app_login') }}" class="text-white/65 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-all duration-200">Connexion</a>
+        <a href="{{ path('app_register') }}" class="text-white font-medium bg-blue-600 hover:bg-blue-500 border border-blue-400/30 px-4 py-1.5 rounded-md transition-all duration-200 hover:-translate-y-px">Inscription</a>
+      {% endif %}
+    </nav>
+
+  </div>
+</header>
 {% endblock %}

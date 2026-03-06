@@ -1,53 +1,57 @@
 {% if pageCount > 1 %}
-<nav class="flex justify-center items-center gap-2 mt-8">
+<nav class="flex justify-center items-center gap-1.5 mt-8">
 
-    {# Bouton Précédent #}
-    {% if current > 1 %}
-        <a href="{{ path(route, query|merge({(pageParameterName): current - 1})) }}"
-           class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-            ←
-        </a>
+  {# Bouton Précédent #}
+  {% if current > 1 %}
+    <a href="{{ path(route, query|merge({(pageParameterName): current - 1})) }}"
+       class="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-900 border border-white/8 text-white/50 hover:text-white hover:border-white/20 hover:bg-slate-800 transition-all duration-200">
+      ←
+    </a>
+  {% else %}
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-900 border border-white/5 text-white/20 cursor-not-allowed">←</span>
+  {% endif %}
+
+  {# Première page + ellipse #}
+  {% if pagesInRange|first > 1 %}
+    <a href="{{ path(route, query|merge({(pageParameterName): 1})) }}"
+       class="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-900 border border-white/8 text-white/50 hover:text-white hover:border-white/20 hover:bg-slate-800 transition-all duration-200">1</a>
+    {% if pagesInRange|first > 2 %}
+      <span class="flex items-center justify-center w-9 h-9 text-white/25">…</span>
+    {% endif %}
+  {% endif %}
+
+  {# Pages #}
+  {% for page in pagesInRange %}
+    {% if page == current %}
+      <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 border border-blue-500/50 text-white font-semibold shadow-[0_0_12px_rgba(37,99,235,0.4)]">
+        {{ page }}
+      </span>
     {% else %}
-        <span class="px-4 py-2 rounded-lg border border-gray-200 text-gray-300 cursor-not-allowed">←</span>
+      <a href="{{ path(route, query|merge({(pageParameterName): page})) }}"
+         class="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-900 border border-white/8 text-white/50 hover:text-white hover:border-white/20 hover:bg-slate-800 transition-all duration-200">
+        {{ page }}
+      </a>
     {% endif %}
+  {% endfor %}
 
-    {% if pagesInRange|first > 1 %}
-        <a href="{{ path(route, query|merge({(pageParameterName): 1})) }}" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">1</a>
-        {% if pagesInRange|first > 2 %}
-            <span class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">…</span>
-        {% endif %}
+  {# Dernière page + ellipse #}
+  {% if pagesInRange|last < pageCount %}
+    {% if pagesInRange|last < pageCount - 1 %}
+      <span class="flex items-center justify-center w-9 h-9 text-white/25">…</span>
     {% endif %}
+    <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}"
+       class="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-900 border border-white/8 text-white/50 hover:text-white hover:border-white/20 hover:bg-slate-800 transition-all duration-200">{{ pageCount }}</a>
+  {% endif %}
 
-    {# Pages #}
-    {% for page in pagesInRange %}
-        {% if page == current %}
-            <span class="px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold">
-                {{ page }}
-            </span>
-        {% else %}
-            <a href="{{ path(route, query|merge({(pageParameterName): page})) }}"
-               class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-                {{ page }}
-            </a>
-        {% endif %}
-    {% endfor %}
-
-    {% if pagesInRange|last < pageCount %}
-        {% if pagesInRange|last < pageCount - 1 %}
-            <span class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">…</span>
-        {% endif %}
-        <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">{{ pageCount }}</a>
-    {% endif %}
-
-    {# Bouton Suivant #}
-    {% if current < pageCount %}
-        <a href="{{ path(route, query|merge({(pageParameterName): current + 1})) }}"
-           class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-            →
-        </a>
-    {% else %}
-        <span class="px-4 py-2 rounded-lg border border-gray-200 text-gray-300 cursor-not-allowed">→</span>
-    {% endif %}
+  {# Bouton Suivant #}
+  {% if current < pageCount %}
+    <a href="{{ path(route, query|merge({(pageParameterName): current + 1})) }}"
+       class="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-900 border border-white/8 text-white/50 hover:text-white hover:border-white/20 hover:bg-slate-800 transition-all duration-200">
+      →
+    </a>
+  {% else %}
+    <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-900 border border-white/5 text-white/20 cursor-not-allowed">→</span>
+  {% endif %}
 
 </nav>
 {% endif %}

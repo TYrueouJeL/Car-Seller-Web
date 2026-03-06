@@ -1,38 +1,87 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}CarSeller{% endblock %}
-
 {% block body %}
-    <section class="card-list-2">
-        <div class="card">
-            <div class="card-icon-text-blue">
-                L
-            </div>
-            <h3 class="card-title">Locations</h3>
-            <p class="card-text">Service de location de véhicules</p>
-            <a href="{{ path('app_vehicle_rental') }}" class="card-button">Voir les locations</a>
-        </div>
 
-        <div class="card">
-            <div class="card-icon-text-orange">
-                V
-            </div>
+<!-- Hero intro -->
+<div class="min-h-[calc(100vh-64px)] bg-slate-950 flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
 
-            <h3 class="card-title">Ventes</h3>
-            <p class="card-text">Service de vente de véhicules</p>
-            <a href="{{ path('app_vehicle_sale') }}" class="card-button">Voir les ventes</a>
-        </div>
+  <!-- Fond décoratif -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(37,99,235,0.18),transparent)] pointer-events-none"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-3xl pointer-events-none"></div>
 
-        {% if app.user %}
-            <div class="card">
-                <div class="card-icon-text-green">
-                    R
-                </div>
+  <!-- Titre -->
+  <div class="text-center mb-16 relative">
+    <p class="text-blue-400 text-sm font-medium tracking-widest uppercase mb-4">Bienvenue sur</p>
+    <h1 class="text-5xl md:text-6xl font-black text-white tracking-tight leading-none mb-4">
+      Car<span class="text-blue-400">Seller</span>
+    </h1>
+    <p class="text-white/40 text-lg max-w-md mx-auto">Trouvez le véhicule qui vous correspond, à la vente ou à la location.</p>
+  </div>
 
-                <h3 class="card-title">Rendez-vous</h3>
-                <p class="card-text">Service de rendez-vous</p>
-                <a href="{{ path('app_maintenance') }}" class="card-button">Voir les rendez-vous</a>
-            </div>
-        {% endif %}
-    </section>
+  <!-- Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-{% if app.user %}3{% else %}2{% endif %} gap-6 w-full max-w-4xl relative">
+
+    <!-- Card Locations -->
+    <a href="{{ path('app_vehicle_rental') }}" class="group relative bg-slate-900 border border-white/8 rounded-2xl p-8 flex flex-col gap-5 hover:border-blue-500/50 hover:bg-slate-900/80 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer no-underline overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none"></div>
+      <div class="w-14 h-14 rounded-xl bg-blue-500/15 border border-blue-500/25 flex items-center justify-center text-2xl text-blue-400 font-black">
+        L
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-xl mb-1.5">Locations</h3>
+        <p class="text-white/45 text-sm leading-relaxed">Service de location de véhicules courte et longue durée.</p>
+      </div>
+      <span class="mt-auto inline-flex items-center gap-2 text-blue-400 text-sm font-medium group-hover:gap-3 transition-all duration-200">
+        Voir les locations
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </span>
+    </a>
+
+    <!-- Card Ventes -->
+    <a href="{{ path('app_vehicle_sale') }}" class="group relative bg-slate-900 border border-white/8 rounded-2xl p-8 flex flex-col gap-5 hover:border-orange-500/50 hover:bg-slate-900/80 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer no-underline overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none"></div>
+      <div class="w-14 h-14 rounded-xl bg-orange-500/15 border border-orange-500/25 flex items-center justify-center text-2xl text-orange-400 font-black">
+        V
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-xl mb-1.5">Ventes</h3>
+        <p class="text-white/45 text-sm leading-relaxed">Service de vente de véhicules neufs et d'occasion.</p>
+      </div>
+      <span class="mt-auto inline-flex items-center gap-2 text-orange-400 text-sm font-medium group-hover:gap-3 transition-all duration-200">
+        Voir les ventes
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </span>
+    </a>
+
+    <!-- Card Rendez-vous (connecté uniquement) -->
+    {% if app.user %}
+    <a href="{{ path('app_maintenance') }}" class="group relative bg-slate-900 border border-white/8 rounded-2xl p-8 flex flex-col gap-5 hover:border-emerald-500/50 hover:bg-slate-900/80 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer no-underline overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none"></div>
+      <div class="w-14 h-14 rounded-xl bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center text-2xl text-emerald-400 font-black">
+        R
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-xl mb-1.5">Rendez-vous</h3>
+        <p class="text-white/45 text-sm leading-relaxed">Planifiez votre entretien ou maintenance.</p>
+      </div>
+      <span class="mt-auto inline-flex items-center gap-2 text-emerald-400 text-sm font-medium group-hover:gap-3 transition-all duration-200">
+        Voir les rendez-vous
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </span>
+    </a>
+    {% endif %}
+
+  </div>
+
+  <!-- CTA inscription si non connecté -->
+  {% if not app.user %}
+  <p class="mt-12 text-white/30 text-sm">
+    Vous avez un compte ?
+    <a href="{{ path('app_login') }}" class="text-blue-400 hover:text-blue-300 transition-colors">Connectez-vous</a>
+    pour accéder aux rendez-vous.
+  </p>
+  {% endif %}
+
+</div>
+
 {% endblock %}

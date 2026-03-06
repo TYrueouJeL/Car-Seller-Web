@@ -28,22 +28,22 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Customer $customer = null;
 
-    /**
-     * @var Collection<int, SaleOrder>
-     */
-    #[ORM\OneToMany(targetEntity: SaleOrder::class, mappedBy: 'baseOrder')]
-    private Collection $saleOrders;
+    // /**
+    //  * @var Collection<int, SaleOrder>
+    //  */
+    // #[ORM\OneToMany(targetEntity: SaleOrder::class, mappedBy: 'baseOrder')]
+    // private Collection $saleOrders;
 
-    /**
-     * @var Collection<int, RentalOrder>
-     */
-    #[ORM\OneToMany(targetEntity: RentalOrder::class, mappedBy: 'baseOrder')]
-    private Collection $rentalOrders;
+    // /**
+    //  * @var Collection<int, RentalOrder>
+    //  */
+    // #[ORM\OneToMany(targetEntity: RentalOrder::class, mappedBy: 'baseOrder')]
+    // private Collection $rentalOrders;
 
     public function __construct()
     {
-        $this->saleOrders = new ArrayCollection();
-        $this->rentalOrders = new ArrayCollection();
+        // $this->saleOrders = new ArrayCollection();
+        // $this->rentalOrders = new ArrayCollection();
     }
 
     public function getId(): ?int

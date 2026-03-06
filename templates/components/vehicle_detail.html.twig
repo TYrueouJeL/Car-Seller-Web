@@ -1,24 +1,66 @@
-<div class="md:col-span-1">
-    <img src="https://picsum.photos/400/200?random={{ vehicle.model.id }}" alt="{{ vehicle.model.name }}" class="rounded shadow w-full h-64 object-cover">
-</div>
+{# vehicle_detail component #}
 
-<div class="md:col-span-1 card">
-    <h2 class="subtitle mb-2">{{ vehicle.model.brand.name }} - {{ vehicle.model.name }}</h2>
-    <ul class="text-sm text-gray-700 space-y-1 mb-4">
-        {% if vehicle.year %}<li><strong>Année:</strong> {{ vehicle.year }}</li>{% endif %}
-        {% if vehicle.registration %}<li><strong>Immatriculation:</strong> {{ vehicle.registration }}</li>{% endif %}
-        {% if vehicle.mileage %}<li><strong>Kilométrage:</strong> {{ vehicle.mileage }} km</li>{% endif %}
-    </ul>
+<div class="md:col-span-2 flex flex-col gap-6">
 
-    <div class="mt-4">
-        <h3 class="font-semibold text-sm mb-2">Options :</h3>
-        <div class="flex flex-wrap gap-2">
-            {% for feature in features %}
-                <span class="text-xs bg px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 cursor-default">{{ feature.name }}</span>
-                {% if loop.index % 3 == 0 %}<br>{% endif %}
-            {% else %}
-                <span class="text-xs bg px-2 py-1 rounded bg-gray-200 cursor-default">Aucune option disponible</span>
-            {% endfor %}
-        </div>
+  <!-- Image -->
+  <div class="relative rounded-2xl overflow-hidden">
+    <img
+      src="https://picsum.photos/400/200?random={{ vehicle.model.id }}"
+      alt="{{ vehicle.model.name }}"
+      class="w-full h-72 object-cover"
+    >
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+    <div class="absolute bottom-4 left-5">
+      <p class="text-white/50 text-xs uppercase tracking-widest mb-0.5">{{ vehicle.category.name }}</p>
+      <h2 class="text-white font-black text-2xl tracking-tight">
+        {{ vehicle.model.brand.name }} <span class="text-white/60 font-normal">{{ vehicle.model.name }}</span>
+      </h2>
     </div>
+  </div>
+
+  <!-- Infos + Options -->
+  <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 flex flex-col gap-6">
+
+    <!-- Caractéristiques -->
+    <div>
+      <p class="text-white/35 text-xs uppercase tracking-widest mb-4">Caractéristiques</p>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {% if vehicle.year %}
+        <div class="bg-slate-800/60 border border-white/6 rounded-xl px-4 py-3">
+          <p class="text-white/35 text-xs uppercase tracking-wider mb-1">Année</p>
+          <p class="text-white font-semibold text-sm">{{ vehicle.year }}</p>
+        </div>
+        {% endif %}
+        {% if vehicle.registration %}
+        <div class="bg-slate-800/60 border border-white/6 rounded-xl px-4 py-3">
+          <p class="text-white/35 text-xs uppercase tracking-wider mb-1">Immatriculation</p>
+          <p class="text-white font-semibold text-sm">{{ vehicle.registration }}</p>
+        </div>
+        {% endif %}
+        {% if vehicle.mileage %}
+        <div class="bg-slate-800/60 border border-white/6 rounded-xl px-4 py-3">
+          <p class="text-white/35 text-xs uppercase tracking-wider mb-1">Kilométrage</p>
+          <p class="text-white font-semibold text-sm">{{ vehicle.mileage }} km</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div>
+      <p class="text-white/35 text-xs uppercase tracking-widest mb-4">Options</p>
+      <div class="flex flex-wrap gap-2">
+        {% for feature in features %}
+          <span class="text-xs text-blue-300 bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors cursor-default">
+            {{ feature.name }}
+          </span>
+        {% else %}
+          <span class="text-xs text-white/25 bg-white/5 border border-white/8 px-3 py-1.5 rounded-full cursor-default">
+            Aucune option disponible
+          </span>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
 </div>

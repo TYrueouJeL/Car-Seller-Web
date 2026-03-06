@@ -29,23 +29,23 @@ class Vehicle
     #[ORM\ManyToOne(inversedBy: 'vehicles')]
     private ?Category $category = null;
 
-    /**
-     * @var Collection<int, RentableVehicle>
-     */
-    #[ORM\OneToMany(targetEntity: RentableVehicle::class, mappedBy: 'vehicle')]
-    private Collection $rentableVehicles;
+    // /**
+    //  * @var Collection<int, RentableVehicle>
+    //  */
+    // #[ORM\OneToMany(targetEntity: RentableVehicle::class, mappedBy: 'vehicle')]
+    // private Collection $rentableVehicles;
 
-    /**
-     * @var Collection<int, SalableVehicle>
-     */
-    #[ORM\OneToMany(targetEntity: SalableVehicle::class, mappedBy: 'vehicle')]
-    private Collection $salableVehicles;
+    // /**
+    //  * @var Collection<int, SalableVehicle>
+    //  */
+    // #[ORM\OneToMany(targetEntity: SalableVehicle::class, mappedBy: 'vehicle')]
+    // private Collection $salableVehicles;
 
-    /**
-     * @var Collection<int, UserVehicle>
-     */
-    #[ORM\OneToMany(targetEntity: UserVehicle::class, mappedBy: 'vehicle')]
-    private Collection $userVehicles;
+    // /**
+    //  * @var Collection<int, UserVehicle>
+    //  */
+    // #[ORM\OneToMany(targetEntity: UserVehicle::class, mappedBy: 'vehicle')]
+    // private Collection $userVehicles;
 
     #[ORM\Column]
     private ?int $year = null;
@@ -64,9 +64,9 @@ class Vehicle
 
     public function __construct()
     {
-        $this->rentableVehicles = new ArrayCollection();
-        $this->salableVehicles = new ArrayCollection();
-        $this->userVehicles = new ArrayCollection();
+        // $this->rentableVehicles = new ArrayCollection();
+        // $this->salableVehicles = new ArrayCollection();
+        // $this->userVehicles = new ArrayCollection();
         $this->vehicleFeatures = new ArrayCollection();
     }
 

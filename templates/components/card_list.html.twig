@@ -1,23 +1,26 @@
-<div class="{{ column_count == 1 ? 'card-list-1' : column_count == 2 ? 'card-list-2' : 'card-list-3' }}">
-    {% for item in items %}
-        {% if type == 'rental' or type == 'sale' or type == 'userVehicle' %}
-            {{ component('vehicle_card', {
-                'vehicle': item,
-                'detail_path': detail_path is defined ? detail_path ~ type ~ '/' ~ item.id : null,
-                'type': type,
-            }) }}
-        {% elseif type == 'maintenance' %}
-            {{ component('maintenance_card', {
-                'maintenance': item,
-                'detail_path': detail_path is defined ? detail_path ~ type ~ '/' ~ item.id : null,
-            }) }}
-        {% elseif type == 'maintenanceRequest' %}
-            {{ component('maintenance_request_card', {
-                'maintenanceRequest': item,
-                'detail_path': detail_path is defined ? detail_path ~ type ~ '/' ~ item.id : null,
-            }) }}
-        {% endif %}
-    {% else %}
-        <p class="text-gray-500 italic">Aucun élément à afficher.</p>
-    {% endfor %}
+<div class="grid gap-6
+  {{ column_count == 1 ? 'grid-cols-1 max-w-md mx-auto' :
+     column_count == 2 ? 'grid-cols-1 sm:grid-cols-2' :
+                         'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' }}">
+  {% for item in items %}
+    {% if type == 'rental' or type == 'sale' or type == 'userVehicle' %}
+      {{ component('vehicle_card', {
+        'vehicle': item,
+        'detail_path': detail_path is defined ? detail_path ~ type ~ '/' ~ item.id : null,
+        'type': type,
+      }) }}
+    {% elseif type == 'maintenance' %}
+      {{ component('maintenance_card', {
+        'maintenance': item,
+        'detail_path': detail_path is defined ? detail_path ~ type ~ '/' ~ item.id : null,
+      }) }}
+    {% elseif type == 'maintenanceRequest' %}
+      {{ component('maintenance_request_card', {
+        'maintenanceRequest': item,
+        'detail_path': detail_path is defined ? detail_path ~ type ~ '/' ~ item.id : null,
+      }) }}
+    {% endif %}
+  {% else %}
+    <p class="col-span-full text-center text-white/30 italic py-16">Aucun élément à afficher.</p>
+  {% endfor %}
 </div>

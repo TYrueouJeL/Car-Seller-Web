@@ -48,17 +48,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
-    /**
-     * @var Collection<int, Technician>
-     */
-    #[ORM\OneToMany(targetEntity: Technician::class, mappedBy: 'baseUser')]
-    private Collection $technicians;
+    // /**
+    //  * @var Collection<int, Technician>
+    //  */
+    // #[ORM\OneToMany(targetEntity: Technician::class, mappedBy: 'baseUser')]
+    // private Collection $technicians;
 
-    /**
-     * @var Collection<int, Customer>
-     */
-    #[ORM\OneToMany(targetEntity: Customer::class, mappedBy: 'baseUser')]
-    private Collection $customers;
+    // /**
+    //  * @var Collection<int, Customer>
+    //  */
+    // #[ORM\OneToMany(targetEntity: Customer::class, mappedBy: 'baseUser')]
+    // private Collection $customers;
 
     /**
      * @var Collection<int, TicketComment>
@@ -68,8 +68,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->technicians = new ArrayCollection();
-        $this->customers = new ArrayCollection();
+        // $this->technicians = new ArrayCollection();
+        // $this->customers = new ArrayCollection();
         $this->ticketComments = new ArrayCollection();
     }
 
