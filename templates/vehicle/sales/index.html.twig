@@ -6,8 +6,12 @@
     <div class="container mx-auto px-8 py-8">
         <h1 class="title text-center">Ventes</h1>
 
+        <div class="flex justify-center mb-8">
+        {{ knp_pagination_render(vehicles) }}
+        </div>
+
         {{ component('card_list', {
-            'items': vehicles,
+            'items': vehicles|slice(0, vehicles|length),
             'type': 'sale',
         }) }}
     </div>

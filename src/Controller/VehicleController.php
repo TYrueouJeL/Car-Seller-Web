@@ -7,7 +7,7 @@ use App\Entity\RentalOrder;
 use App\Entity\UserVehicle;
 use App\Entity\VehicleFeature;
 use App\Form\MaintenanceRequestFormType;
-use App\Form\RentalOrderFormType;
+use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\RentableVehicleRepository;
 use App\Repository\RentalOrderRepository;
 use App\Repository\SalableVehicleRepository;
@@ -15,7 +15,6 @@ use App\Repository\UserVehicleRepository;
 use App\Repository\VehicleFeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,9 +22,15 @@ use Symfony\Component\Routing\Attribute\Route;
 final class VehicleController extends AbstractController
 {
     #[Route('/vehicle/rental', name: 'app_vehicle_rental')]
-    public function rentals(RentableVehicleRepository $rentableVehicleRepository): Response
+    public function rentals(RentableVehicleRepository $rentableVehicleRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $vehicles = $rentableVehicleRepository->findAllWithDetails();
+        $query = $rentableVehicleRepository->findAllWithDetails();
+
+        $vehicles = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            9
+        );
 
         return $this->render('vehicle/rental/index.html.twig', [
             'vehicles' => $vehicles,
@@ -79,10 +84,15 @@ final class VehicleController extends AbstractController
     }
 
     #[Route('/vehicle/sale', name: 'app_vehicle_sale')]
-    public function sales(SalableVehicleRepository $salableVehicleRepository): Response
+    public function sales(SalableVehicleRepository $salableVehicleRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $vehicles = $salableVehicleRepository->findAllWithDetails();
+        $query = $salableVehicleRepository->findAllWithDetails();
 
+        $vehicles = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            9
+        );
         return $this->render('vehicle/sales/index.html.twig', [
             'vehicles' => $vehicles,
         ]);

@@ -1,0 +1,53 @@
+{% if pageCount > 1 %}
+<nav class="flex justify-center items-center gap-2 mt-8">
+
+    {# Bouton Précédent #}
+    {% if current > 1 %}
+        <a href="{{ path(route, query|merge({(pageParameterName): current - 1})) }}"
+           class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
+            ←
+        </a>
+    {% else %}
+        <span class="px-4 py-2 rounded-lg border border-gray-200 text-gray-300 cursor-not-allowed">←</span>
+    {% endif %}
+
+    {% if pagesInRange|first > 1 %}
+        <a href="{{ path(route, query|merge({(pageParameterName): 1})) }}" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">1</a>
+        {% if pagesInRange|first > 2 %}
+            <span class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">…</span>
+        {% endif %}
+    {% endif %}
+
+    {# Pages #}
+    {% for page in pagesInRange %}
+        {% if page == current %}
+            <span class="px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold">
+                {{ page }}
+            </span>
+        {% else %}
+            <a href="{{ path(route, query|merge({(pageParameterName): page})) }}"
+               class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
+                {{ page }}
+            </a>
+        {% endif %}
+    {% endfor %}
+
+    {% if pagesInRange|last < pageCount %}
+        {% if pagesInRange|last < pageCount - 1 %}
+            <span class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">…</span>
+        {% endif %}
+        <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">{{ pageCount }}</a>
+    {% endif %}
+
+    {# Bouton Suivant #}
+    {% if current < pageCount %}
+        <a href="{{ path(route, query|merge({(pageParameterName): current + 1})) }}"
+           class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
+            →
+        </a>
+    {% else %}
+        <span class="px-4 py-2 rounded-lg border border-gray-200 text-gray-300 cursor-not-allowed">→</span>
+    {% endif %}
+
+</nav>
+{% endif %}

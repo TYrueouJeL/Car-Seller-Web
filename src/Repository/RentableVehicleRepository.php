@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\RentableVehicle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Constraints\Date;
 
@@ -32,17 +33,15 @@ class RentableVehicleRepository extends ServiceEntityRepository
         return !empty($query->getResult());
     }
 
-    public function findAllWithDetails(): array
+    public function findAllWithDetails(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('rv')
+        return $this->createQueryBuilder('rv')
             ->leftJoin('rv.model', 'm')
             ->addSelect('m')
             ->leftJoin('m.brand', 'b')
             ->addSelect('b')
             ->leftJoin('rv.category', 'c')
             ->addSelect('c');
-
-        return $qb->getQuery()->getResult();
     }
 
     public function findUnavailableDates(RentableVehicle $rentableVehicle): array
