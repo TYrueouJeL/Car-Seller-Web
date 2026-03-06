@@ -75,63 +75,63 @@ class Order
         return $this;
     }
 
-    /**
-     * @return Collection<int, SaleOrder>
-     */
-    public function getSaleOrders(): Collection
-    {
-        return $this->saleOrders;
-    }
+    // /**
+    //  * @return Collection<int, SaleOrder>
+    //  */
+    // public function getSaleOrders(): Collection
+    // {
+    //     return $this->saleOrders;
+    // }
 
-    public function addSaleOrder(SaleOrder $saleOrder): static
-    {
-        if (!$this->saleOrders->contains($saleOrder)) {
-            $this->saleOrders->add($saleOrder);
-            $saleOrder->setBaseOrder($this);
-        }
+    // public function addSaleOrder(SaleOrder $saleOrder): static
+    // {
+    //     if (!$this->saleOrders->contains($saleOrder)) {
+    //         $this->saleOrders->add($saleOrder);
+    //         $saleOrder->setBaseOrder($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeSaleOrder(SaleOrder $saleOrder): static
-    {
-        if ($this->saleOrders->removeElement($saleOrder)) {
-            // set the owning side to null (unless already changed)
-            if ($saleOrder->getBaseOrder() === $this) {
-                $saleOrder->setBaseOrder(null);
-            }
-        }
+    // public function removeSaleOrder(SaleOrder $saleOrder): static
+    // {
+    //     if ($this->saleOrders->removeElement($saleOrder)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($saleOrder->getBaseOrder() === $this) {
+    //             $saleOrder->setBaseOrder(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * @return Collection<int, RentalOrder>
-     */
-    public function getRentalOrders(): Collection
-    {
-        return $this->rentalOrders;
-    }
+    // /**
+    //  * @return Collection<int, RentalOrder>
+    //  */
+    // public function getRentalOrders(): Collection
+    // {
+    //     return $this->rentalOrders;
+    // }
 
-    public function addRentalOrder(RentalOrder $rentalOrder): static
-    {
-        if (!$this->rentalOrders->contains($rentalOrder)) {
-            $this->rentalOrders->add($rentalOrder);
-            $rentalOrder->setBaseOrder($this);
-        }
+    // public function addRentalOrder(RentalOrder $rentalOrder): static
+    // {
+    //     if (!$this->rentalOrders->contains($rentalOrder)) {
+    //         $this->rentalOrders->add($rentalOrder);
+    //         $rentalOrder->setBaseOrder($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeRentalOrder(RentalOrder $rentalOrder): static
-    {
-        if ($this->rentalOrders->removeElement($rentalOrder)) {
-            // set the owning side to null (unless already changed)
-            if ($rentalOrder->getBaseOrder() === $this) {
-                $rentalOrder->setBaseOrder(null);
-            }
-        }
+    // public function removeRentalOrder(RentalOrder $rentalOrder): static
+    // {
+    //     if ($this->rentalOrders->removeElement($rentalOrder)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($rentalOrder->getBaseOrder() === $this) {
+    //             $rentalOrder->setBaseOrder(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

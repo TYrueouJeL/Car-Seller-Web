@@ -99,95 +99,95 @@ class Vehicle
         return $this;
     }
 
-    /**
-     * @return Collection<int, RentableVehicle>
-     */
-    public function getRentableVehicles(): Collection
-    {
-        return $this->rentableVehicles;
-    }
+    // /**
+    //  * @return Collection<int, RentableVehicle>
+    //  */
+    // public function getRentableVehicles(): Collection
+    // {
+    //     return $this->rentableVehicles;
+    // }
 
-    public function addRentableVehicle(RentableVehicle $rentableVehicle): static
-    {
-        if (!$this->rentableVehicles->contains($rentableVehicle)) {
-            $this->rentableVehicles->add($rentableVehicle);
-            $rentableVehicle->setVehicle($this);
-        }
+    // public function addRentableVehicle(RentableVehicle $rentableVehicle): static
+    // {
+    //     if (!$this->rentableVehicles->contains($rentableVehicle)) {
+    //         $this->rentableVehicles->add($rentableVehicle);
+    //         $rentableVehicle->setVehicle($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeRentableVehicle(RentableVehicle $rentableVehicle): static
-    {
-        if ($this->rentableVehicles->removeElement($rentableVehicle)) {
-            // set the owning side to null (unless already changed)
-            if ($rentableVehicle->getVehicle() === $this) {
-                $rentableVehicle->setVehicle(null);
-            }
-        }
+    // public function removeRentableVehicle(RentableVehicle $rentableVehicle): static
+    // {
+    //     if ($this->rentableVehicles->removeElement($rentableVehicle)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($rentableVehicle->getVehicle() === $this) {
+    //             $rentableVehicle->setVehicle(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * @return Collection<int, SalableVehicle>
-     */
-    public function getSalableVehicles(): Collection
-    {
-        return $this->salableVehicles;
-    }
+    // /**
+    //  * @return Collection<int, SalableVehicle>
+    //  */
+    // public function getSalableVehicles(): Collection
+    // {
+    //     return $this->salableVehicles;
+    // }
 
-    public function addSalableVehicle(SalableVehicle $salableVehicle): static
-    {
-        if (!$this->salableVehicles->contains($salableVehicle)) {
-            $this->salableVehicles->add($salableVehicle);
-            $salableVehicle->setVehicle($this);
-        }
+    // public function addSalableVehicle(SalableVehicle $salableVehicle): static
+    // {
+    //     if (!$this->salableVehicles->contains($salableVehicle)) {
+    //         $this->salableVehicles->add($salableVehicle);
+    //         $salableVehicle->setVehicle($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeSalableVehicle(SalableVehicle $salableVehicle): static
-    {
-        if ($this->salableVehicles->removeElement($salableVehicle)) {
-            // set the owning side to null (unless already changed)
-            if ($salableVehicle->getVehicle() === $this) {
-                $salableVehicle->setVehicle(null);
-            }
-        }
+    // public function removeSalableVehicle(SalableVehicle $salableVehicle): static
+    // {
+    //     if ($this->salableVehicles->removeElement($salableVehicle)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($salableVehicle->getVehicle() === $this) {
+    //             $salableVehicle->setVehicle(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * @return Collection<int, UserVehicle>
-     */
-    public function getUserVehicles(): Collection
-    {
-        return $this->userVehicles;
-    }
+    // /**
+    //  * @return Collection<int, UserVehicle>
+    //  */
+    // public function getUserVehicles(): Collection
+    // {
+    //     return $this->userVehicles;
+    // }
 
-    public function addUserVehicle(UserVehicle $userVehicle): static
-    {
-        if (!$this->userVehicles->contains($userVehicle)) {
-            $this->userVehicles->add($userVehicle);
-            $userVehicle->setVehicle($this);
-        }
+    // public function addUserVehicle(UserVehicle $userVehicle): static
+    // {
+    //     if (!$this->userVehicles->contains($userVehicle)) {
+    //         $this->userVehicles->add($userVehicle);
+    //         $userVehicle->setVehicle($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeUserVehicle(UserVehicle $userVehicle): static
-    {
-        if ($this->userVehicles->removeElement($userVehicle)) {
-            // set the owning side to null (unless already changed)
-            if ($userVehicle->getVehicle() === $this) {
-                $userVehicle->setVehicle(null);
-            }
-        }
+    // public function removeUserVehicle(UserVehicle $userVehicle): static
+    // {
+    //     if ($this->userVehicles->removeElement($userVehicle)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($userVehicle->getVehicle() === $this) {
+    //             $userVehicle->setVehicle(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getYear(): ?int
     {

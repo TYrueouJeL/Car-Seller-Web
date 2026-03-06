@@ -178,65 +178,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Technician>
-     */
-    public function getTechnicians(): Collection
-    {
-        return $this->technicians;
-    }
+    // /**
+    //  * @return Collection<int, Technician>
+    //  */
+    // public function getTechnicians(): Collection
+    // {
+    //     return $this->technicians;
+    // }
 
-    public function addTechnician(Technician $technician): static
-    {
-        if (!$this->technicians->contains($technician)) {
-            $this->technicians->add($technician);
-            $technician->setBaseUser($this);
-        }
+    // public function addTechnician(Technician $technician): static
+    // {
+    //     if (!$this->technicians->contains($technician)) {
+    //         $this->technicians->add($technician);
+    //         $technician->setBaseUser($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeTechnician(Technician $technician): static
-    {
-        if ($this->technicians->removeElement($technician)) {
-            // set the owning side to null (unless already changed)
-            if ($technician->getBaseUser() === $this) {
-                $technician->setBaseUser(null);
-            }
-        }
+    // public function removeTechnician(Technician $technician): static
+    // {
+    //     if ($this->technicians->removeElement($technician)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($technician->getBaseUser() === $this) {
+    //             $technician->setBaseUser(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * @return Collection<int, Customer>
-     */
-    public function getCustomers(): Collection
-    {
-        return $this->customers;
-    }
+    // /**
+    //  * @return Collection<int, Customer>
+    //  */
+    // public function getCustomers(): Collection
+    // {
+    //     return $this->customers;
+    // }
 
-    public function addCustomer(Customer $customer): static
-    {
-        if (!$this->customers->contains($customer)) {
-            $this->customers->add($customer);
-            $customer->setBaseUser($this);
-        }
+    // public function addCustomer(Customer $customer): static
+    // {
+    //     if (!$this->customers->contains($customer)) {
+    //         $this->customers->add($customer);
+    //         $customer->setBaseUser($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeCustomer(Customer $customer): static
-    {
-        if ($this->customers->removeElement($customer)) {
-            // set the owning side to null (unless already changed)
-            if ($customer->getBaseUser() === $this) {
-                $customer->setBaseUser(null);
-            }
-        }
+    // public function removeCustomer(Customer $customer): static
+    // {
+    //     if ($this->customers->removeElement($customer)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($customer->getBaseUser() === $this) {
+    //             $customer->setBaseUser(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, TicketComment>
