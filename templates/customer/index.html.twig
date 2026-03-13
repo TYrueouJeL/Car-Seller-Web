@@ -1,48 +1,80 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Mon compte{% endblock %}
-
 {% block body %}
-    <div class="container mx-auto px-8 py-8">
-        <h1 class="title text-center">Mon compte</h1>
 
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="md:col-span-2 md:col-start-2 card">
-                <h2 class="card-title">Informations personnelles</h2>
-                <ul class="card-text space-y-2">
-                    <li><strong>Nom :</strong> {{ app.user.lastName }}</li>
-                    <li><strong>Prénom :</strong> {{ app.user.firstName }}</li>
-                    <li><strong>Email :</strong> {{ app.user.email }}</li>
-                </ul>
-            </div>
+<div class="min-h-[calc(100vh-64px)] bg-slate-950 px-6 py-14 relative">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_0%,rgba(37,99,235,0.09),transparent)] pointer-events-none"></div>
 
-            <div class="md:col-span-2 card">
-                <h2 class="card-title">Mes véhicules</h2>
-                {% if userVehicles is not empty %}
-                    {{ component('card_list', {
-                        'items': userVehicles,
-                        'type': 'userVehicle',
-                        'detail_path': 'vehicle/',
-                        'column_count': 2,
-                    }) }}
-                {% else %}
-                    <p class="text-gray-600">Vous n'avez pas encore ajouté de véhicules.</p>
-                {% endif %}
-            </div>
+  <div class="max-w-5xl mx-auto relative flex flex-col gap-10">
 
-            <div class="md:col-span-2 card">
-                <h2 class="card-title">Mes locations en cours</h2>
-                {% if rentalVehicles is not empty %}
-                    {{ component('card_list', {
-                        'items': rentalVehicles,
-                        'type': 'rental',
-                        'detail_path': 'vehicle/',
-                        'column_count': 2,
-                    }) }}
-                {% else %}
-                    <p class="text-gray-600">Vous n'avez pas de locations en cours.</p>
-                {% endif %}
-            </div>
-        </div>
+    <!-- Header profil -->
+    <div class="flex items-center gap-5">
+      <div class="shrink-0 w-14 h-14 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white text-lg leading-none shadow-[0_0_20px_rgba(37,99,235,0.45)]">
+        {{ app.user.firstName|first|upper }}{{ app.user.lastName|first|upper }}
+      </div>
+      <div>
+        <p class="text-blue-400 text-xs font-semibold tracking-widest uppercase mb-0.5">Espace personnel</p>
+        <h1 class="text-2xl font-black text-white tracking-tight leading-none">{{ app.user.firstName }} {{ app.user.lastName }}</h1>
+        <p class="text-white/35 text-sm mt-1">{{ app.user.email }}</p>
+      </div>
     </div>
+
+    <!-- Infos personnelles -->
+    <div class="bg-slate-900 border border-white/8 rounded-2xl p-6">
+      <p class="text-white/35 text-xs uppercase tracking-widest mb-5">Informations personnelles</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div>
+          <p class="text-white/30 text-xs uppercase tracking-wider mb-1">Nom</p>
+          <p class="text-white font-semibold text-sm">{{ app.user.lastName }}</p>
+        </div>
+        <div>
+          <p class="text-white/30 text-xs uppercase tracking-wider mb-1">Prénom</p>
+          <p class="text-white font-semibold text-sm">{{ app.user.firstName }}</p>
+        </div>
+        <div>
+          <p class="text-white/30 text-xs uppercase tracking-wider mb-1">Adresse e-mail</p>
+          <p class="text-white font-semibold text-sm">{{ app.user.email }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Véhicules + Locations -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Mes véhicules -->
+      <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 flex flex-col gap-5">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2 h-2 shrink-0 rounded-full bg-orange-400 shadow-[0_0_8px_rgba(251,146,60,0.7)]"></span>
+          <h2 class="text-white font-bold text-sm uppercase tracking-wider">Mes véhicules</h2>
+        </div>
+        {% if userVehicles is not empty %}
+          {{ component('card_list', { 'items': userVehicles, 'type': 'userVehicle', 'detail_path': 'vehicle/', 'column_count': 2 }) }}
+        {% else %}
+          <div class="flex flex-col items-center justify-center py-10 gap-2">
+            <p class="text-white/20 text-4xl">🚗</p>
+            <p class="text-white/25 italic text-sm">Aucun véhicule pour l'instant.</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Mes locations -->
+      <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 flex flex-col gap-5">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2 h-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]"></span>
+          <h2 class="text-white font-bold text-sm uppercase tracking-wider">Mes locations en cours</h2>
+        </div>
+        {% if rentalVehicles is not empty %}
+          {{ component('card_list', { 'items': rentalVehicles, 'type': 'rental', 'detail_path': 'vehicle/', 'column_count': 2 }) }}
+        {% else %}
+          <div class="flex flex-col items-center justify-center py-10 gap-2">
+            <p class="text-white/20 text-4xl">🔑</p>
+            <p class="text-white/25 italic text-sm">Aucune location en cours.</p>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
 {% endblock %}
