@@ -19,14 +19,14 @@ class Category
     private ?string $name = null;
 
     /**
-     * @var Collection<int, Vehicle>
+     * @var Collection<int, Model>
      */
-    #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'category')]
-    private Collection $vehicles;
+    #[ORM\OneToMany(targetEntity: Model::class, mappedBy: 'category')]
+    private Collection $models;
 
     public function __construct()
     {
-        $this->vehicles = new ArrayCollection();
+        $this->models = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,29 +47,29 @@ class Category
     }
 
     /**
-     * @return Collection<int, Vehicle>
+     * @return Collection<int, Model>
      */
-    public function getVehicles(): Collection
+    public function getModels(): Collection
     {
-        return $this->vehicles;
+        return $this->models;
     }
 
-    public function addVehicle(Vehicle $vehicle): static
+    public function addModel(Model $model): static
     {
-        if (!$this->vehicles->contains($vehicle)) {
-            $this->vehicles->add($vehicle);
-            $vehicle->setCategory($this);
+        if (!$this->models->contains($model)) {
+            $this->models->add($model);
+            $model->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeVehicle(Vehicle $vehicle): static
+    public function removeModel(Model $model): static
     {
-        if ($this->vehicles->removeElement($vehicle)) {
+        if ($this->models->removeElement($model)) {
             // set the owning side to null (unless already changed)
-            if ($vehicle->getCategory() === $this) {
-                $vehicle->setCategory(null);
+            if ($model->getCategory() === $this) {
+                $model->setCategory(null);
             }
         }
 

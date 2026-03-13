@@ -23,7 +23,7 @@ class UserVehicleRepository extends ServiceEntityRepository
             ->addSelect('m')
             ->leftJoin('m.brand', 'b')
             ->addSelect('b')
-            ->leftJoin('uv.category', 'c')
+            ->leftJoin('m.category', 'c')
             ->addSelect('c');
 
         return $qb->getQuery()->getResult();

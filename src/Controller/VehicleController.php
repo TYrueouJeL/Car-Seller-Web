@@ -115,7 +115,6 @@ final class VehicleController extends AbstractController
             $userVehicle = new UserVehicle();
 
             $userVehicle->setCustomer($this->getUser());
-            $userVehicle->setCategory($vehicle->getCategory());
             $userVehicle->setModel($vehicle->getModel());
             $userVehicle->setRegistration($vehicle->getRegistration());
             $userVehicle->setYear($vehicle->getYear());

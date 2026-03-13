@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use App\Entity\Customer;
 use App\Entity\Model;
 use App\Entity\UserVehicle;
@@ -19,7 +18,6 @@ class UserVehicleFixtures extends BaseFixture implements DependentFixtureInterfa
         for ($i = 0; $i < self::COUNT; ++$i) {
             $vehicle = new UserVehicle();
             $vehicle->setModel($this->getRandomReference(ModelFixtures::REF_PREFIX, ModelFixtures::COUNT, Model::class));
-            $vehicle->setCategory($this->getRandomReference(CategoryFixtures::REF_PREFIX, CategoryFixtures::COUNT, Category::class));
             $vehicle->setCustomer($this->getRandomReference(CustomerFixtures::REF_PREFIX, CustomerFixtures::COUNT, Customer::class));
             $vehicle->setYear((int) $this->faker->year());
             $vehicle->setMileage((string) $this->faker->randomFloat(2, 0, 100000));
@@ -36,7 +34,6 @@ class UserVehicleFixtures extends BaseFixture implements DependentFixtureInterfa
     {
         return [
             ModelFixtures::class,
-            CategoryFixtures::class,
             CustomerFixtures::class,
         ];
     }

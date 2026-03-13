@@ -33,6 +33,9 @@ class Model
     #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'model')]
     private Collection $vehicles;
 
+    #[ORM\ManyToOne(inversedBy: 'models')]
+    private ?Category $category = null;
+
     public function __construct()
     {
         $this->pieceModels = new ArrayCollection();
@@ -124,6 +127,18 @@ class Model
                 $vehicle->setModel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

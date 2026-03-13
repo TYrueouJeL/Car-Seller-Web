@@ -6,7 +6,6 @@ use App\Entity\RentableVehicle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @extends ServiceEntityRepository<RentableVehicle>
@@ -40,7 +39,7 @@ class RentableVehicleRepository extends ServiceEntityRepository
             ->addSelect('m')
             ->leftJoin('m.brand', 'b')
             ->addSelect('b')
-            ->leftJoin('rv.category', 'c')
+            ->leftJoin('m.category', 'c')
             ->addSelect('c');
     }
 

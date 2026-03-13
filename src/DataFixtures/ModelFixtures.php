@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Brand;
+use App\Entity\Category;
 use App\Entity\Model;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -21,6 +22,7 @@ class ModelFixtures extends BaseFixture implements DependentFixtureInterface
                 $model = new Model();
                 $model->setName($modelName);
                 $model->setBrand($brand);
+                $model->setCategory($this->getRandomReference(CategoryFixtures::REF_PREFIX, CategoryFixtures::COUNT, Category::class));
 
                 $manager->persist($model);
                 $this->addReference(self::REF_PREFIX.$modelIndex, $model);
@@ -33,6 +35,9 @@ class ModelFixtures extends BaseFixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [\App\DataFixtures\BrandFixtures::class];
+        return [
+            BrandFixtures::class,
+            CategoryFixtures::class,
+];
     }
 }

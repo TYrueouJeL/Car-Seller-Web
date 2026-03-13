@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use App\Entity\Model;
 use App\Entity\RentableVehicle;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,7 +17,6 @@ class RentableVehicleFixtures extends BaseFixture implements DependentFixtureInt
         for ($i = 0; $i < self::COUNT; ++$i) {
             $vehicle = new RentableVehicle();
             $vehicle->setModel($this->getRandomReference(ModelFixtures::REF_PREFIX, ModelFixtures::COUNT, Model::class));
-            $vehicle->setCategory($this->getRandomReference(CategoryFixtures::REF_PREFIX, CategoryFixtures::COUNT, Category::class));
             $vehicle->setDailyPrice((string) $this->faker->randomFloat(2, 20, 200));
             $vehicle->setYear((int) $this->faker->year());
             $vehicle->setMileage((string) $this->faker->randomFloat(2, 0, 100000));
@@ -35,7 +33,6 @@ class RentableVehicleFixtures extends BaseFixture implements DependentFixtureInt
     {
         return [
             ModelFixtures::class,
-            CategoryFixtures::class,
         ];
     }
 }

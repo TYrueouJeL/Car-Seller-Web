@@ -23,7 +23,7 @@ class SalableVehicleRepository extends ServiceEntityRepository
             ->addSelect('m')
             ->leftJoin('m.brand', 'b')
             ->addSelect('b')
-            ->leftJoin('sv.category', 'c')
+            ->leftJoin('m.category', 'c')
             ->addSelect('c');
 
         return $qb->getQuery()->getResult();

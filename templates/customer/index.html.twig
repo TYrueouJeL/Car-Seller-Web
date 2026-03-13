@@ -39,7 +39,7 @@
     </div>
 
     <!-- Véhicules + Locations -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 gap-6">
 
       <!-- Mes véhicules -->
       <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 flex flex-col gap-5">
@@ -57,7 +57,7 @@
         {% endif %}
       </div>
 
-      <!-- Mes locations -->
+      <!-- Mes locations en cours -->
       <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 flex flex-col gap-5">
         <div class="flex items-center gap-2.5">
           <span class="w-2 h-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]"></span>
@@ -69,6 +69,22 @@
           <div class="flex flex-col items-center justify-center py-10 gap-2">
             <p class="text-white/20 text-4xl">🔑</p>
             <p class="text-white/25 italic text-sm">Aucune location en cours.</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Mes locations à venir -->
+      <div class="bg-slate-900 border border-white/8 rounded-2xl p-6 flex flex-col gap-5">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2 h-2 shrink-0 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.7)]"></span>
+          <h2 class="text-white font-bold text-sm uppercase tracking-wider">Mes locations à venir</h2>
+        </div>
+        {% if upcomingRentalVehicles is not empty %}
+          {{ component('card_list', { 'items': upcomingRentalVehicles, 'type': 'rental', 'detail_path': 'vehicle/', 'column_count': 2 }) }}
+        {% else %}
+          <div class="flex flex-col items-center justify-center py-10 gap-2">
+            <p class="text-white/20 text-4xl">🗓️</p>
+            <p class="text-white/25 italic text-sm">Aucune location à venir.</p>
           </div>
         {% endif %}
       </div>

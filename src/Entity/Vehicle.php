@@ -26,9 +26,6 @@ class Vehicle
     #[ORM\ManyToOne(inversedBy: 'vehicles')]
     private ?Model $model = null;
 
-    #[ORM\ManyToOne(inversedBy: 'vehicles')]
-    private ?Category $category = null;
-
     // /**
     //  * @var Collection<int, RentableVehicle>
     //  */
@@ -83,18 +80,6 @@ class Vehicle
     public function setModel(?model $model): static
     {
         $this->model = $model;
-
-        return $this;
-    }
-
-    public function getCategory(): ?category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?category $category): static
-    {
-        $this->category = $category;
 
         return $this;
     }
